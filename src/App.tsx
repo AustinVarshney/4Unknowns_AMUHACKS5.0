@@ -8,6 +8,8 @@ import BreathingExercise from "./pages/BreathingExercise";
 import ChatBot from "./pages/ChatBot";
 import CrisisSelection from "./pages/CrisisSelection";
 import EmergencyContacts from "./pages/EmergencyContacts";
+import EmergencyEscalation from "./pages/EmergencyEscalation";
+import FirstAidTips from "./pages/FirstAidTip";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
