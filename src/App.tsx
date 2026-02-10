@@ -1,20 +1,20 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Toaster as Sonner } from "./components/ui/sonner";
+import { Toaster as Sonner } from "./components/ui/sonner.tsx";
 import { Toaster } from "./components/ui/toaster";
-import { TooltipProvider } from "./components/ui/tooltip";
+import { TooltipProvider } from "./components/ui/tooltip.tsx";
 import BreathingExercise from "./pages/BreathingExercise";
 import ChatBot from "./pages/ChatBot";
 import CrisisSelection from "./pages/CrisisSelection";
 import EmergencyContacts from "./pages/EmergencyContacts";
 import EmergencyEscalation from "./pages/EmergencyEscalation";
-import FirstAidTips from "./pages/FirstAidTip";
+import FirstAidTips from "./pages/FirstAidTip.tsx";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import Tutorial from "./pages/Tutorial";
 import ReEvaluation from "./pages/ReEvaluation";
 import SafetyChecklist from "./pages/SafetyChecklist";
+import Tutorial from "./pages/Tutorial";
 
 const queryClient = new QueryClient();
 

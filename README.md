@@ -71,3 +71,37 @@ export default defineConfig([
   },
 ])
 ```
+
+## Deployment to Vercel
+
+This project is configured for deployment on Vercel. Follow these steps:
+
+### Prerequisites
+- A GitHub account
+- A Vercel account (sign up at [vercel.com](https://vercel.com))
+
+### Deployment Steps
+
+1. **Push your code to GitHub**
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
+
+2. **Import Project to Vercel**
+   - Go to [vercel.com/new](https://vercel.com/new)
+   - Import your GitHub repository
+   - Vercel will auto-detect the Vite framework settings
+
+3. **Deploy**
+   - Click "Deploy" - Vercel will automatically use the configuration from `vercel.json`
+   - Your app will be live at `https://your-project.vercel.app`
+
+### Environment Variables
+If you need environment variables, add them in the Vercel dashboard:
+- Go to Project Settings → Environment Variables
+- Add your variables (e.g., `VITE_API_URL`)
+
+### Automatic Deployments
+Every push to the `main` branch will trigger a new deployment automatically.
