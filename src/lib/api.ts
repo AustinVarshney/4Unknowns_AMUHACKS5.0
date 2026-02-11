@@ -1,5 +1,6 @@
 // API Configuration and Service
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const FIRE_EMERGENCY_API_URL = import.meta.env.VITE_FIRE_API_URL || 'http://localhost:8001';
 
 export interface AssessmentRequest {
   user_input: string;
@@ -126,3 +127,84 @@ export function needsEmergencyServices(response: AssessmentResponse): boolean {
     )
   );
 }
+
+// ============ Fire Emergency API Types and Service ============
+
+export interface FireEmergencyRequest {
+  user_input: string;
+  steps?: number;
+  emergency?: boolean;
+}
+
+export interface FireEmergencyStep {
+  step_number: number;
+  instruction: string;
+  is_critical: boolean;
+  duration_seconds?: number | null;
+}
+
+export interface FireEmergencyResponse {
+  steps: FireEmergencyStep[];
+  final_advice: string;
+  do_not_do?: string[];
+  emergency_contacts_needed?: boolean;
+  error?: string;
+  raw_output?: string;
+}
+
+export class FireEmergencyAPI {
+  private baseURL: string;
+
+  constructor(baseURL: string = FIRE_EMERGENCY_API_URL) {
+    this.baseURL = baseURL;
+  }
+
+  /**
+   * Get fire emergency guidance from AI agent
+   */
+  async getFireGuidance(request: FireEmergencyRequest): Promise<FireEmergencyResponse> {
+    try {
+      const response = await fetch(`${this.baseURL}/fire-emergency`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_input: request.user_input,
+          steps: request.steps || 7,
+          emergency: request.emergency !== false, // Default to true
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `API request failed: ${response.statusText}`);
+      }
+
+      const data: FireEmergencyResponse = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Fire Emergency API error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Check API health status
+   */
+  async checkHealth(): Promise<{ status: string; service: string }> {
+    try {
+      const response = await fetch(`${this.baseURL}/health`);
+      if (!response.ok) {
+        throw new Error('Health check failed');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Health check error:', error);
+      throw error;
+    }
+  }
+}
+
+// Export singleton instance
+export const fireEmergencyAPI = new FireEmergencyAPI();

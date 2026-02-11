@@ -6,6 +6,14 @@ CalmPath is a modern, mobile-first crisis management application designed to hel
 
 ## Key Features
 
+### 🔥 **NEW: AI-Powered Fire Emergency Assistant**
+- **Intelligent Fire Analysis**: Uses Groq's Llama 3.3 70B model to analyze fire emergency scenarios
+- **Contextual Safety Steps**: Provides tailored, step-by-step guidance based on specific fire situations
+- **Critical Action Identification**: Highlights time-sensitive and critical safety measures
+- **"Do Not Do" Warnings**: Clear instructions on what to avoid in fire emergencies
+- **Real-time AI Processing**: Fast, intelligent responses to fire emergency descriptions
+- **Emergency Escalation**: Automatic detection when professional fire services are needed
+
 ### Crisis Guidance System
 - **Multi-Crisis Support**: Handle Medical, Fire, Personal Safety, and Other emergencies
 - **AI-Powered Chat Interface**: Natural conversational flow with intelligent response system
@@ -125,11 +133,69 @@ Over 48 accessible, customizable components including:
    npm install
    ```
 
-3. **Start development server**
+3. **Configure environment variables**
+   ```bash
+   # Copy the example file
+   cp .env.example .env
+   
+   # Edit .env to set API endpoints
+   # VITE_API_URL=http://localhost:8000 (Medical Emergency API)
+   # VITE_FIRE_API_URL=http://localhost:8001 (Fire Emergency AI)
+   ```
+
+4. **Start development server**
    ```bash
    npm run dev
    ```
    The app will open at `http://localhost:5173`
+
+### 🔥 Fire Emergency AI Setup
+
+The Fire Emergency feature requires the AI backend to be running:
+
+1. **Navigate to the Financial_Assistant directory** (in the parent Project folder)
+   ```bash
+   cd ../Financial_Assistant
+   ```
+
+2. **Set up Python virtual environment**
+   ```bash
+   python -m venv venv
+   # Windows:
+   venv\Scripts\activate
+   # Linux/Mac:
+   source venv/bin/activate
+   ```
+
+3. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure Groq API Key**
+   ```bash
+   # Create .env file in Financial_Assistant directory
+   echo "GROQ_API_KEY=your_groq_api_key_here" > .env
+   ```
+   Get your free Groq API key at: https://console.groq.com
+
+5. **Start the Fire Emergency AI backend**
+   ```bash
+   uvicorn app:app --reload --port 8001
+   ```
+
+6. **Quick Start (Windows)**
+   Alternatively, use the provided scripts from the Project root:
+   ```bash
+   # Run both frontend and backend
+   .\start.bat
+   # or
+   .\start.ps1
+   ```
+
+**Note**: The Medical Emergency features will work without the Fire Emergency AI backend, but clicking "Fire Emergency" requires the backend to be running.
+
+For complete setup instructions, see [`FIRE_EMERGENCY_INTEGRATION.md`](../FIRE_EMERGENCY_INTEGRATION.md) in the project root.
 
 ## Project Structure
 

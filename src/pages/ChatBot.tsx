@@ -6,7 +6,13 @@ import ChatBubble from "../components/ChatBubble";
 import PageWrapper from "../components/PageWrapper";
 import PanicIndicator, { type PanicLevel } from "../components/PanicIndicator";
 import TimerComponent from "../components/TimerComponent";
-import { medicalAPI, normalizeImmediateActions, type AssessmentResponse } from "../lib/api";
+import { 
+  medicalAPI, 
+  normalizeImmediateActions, 
+  fireEmergencyAPI,
+  type AssessmentResponse,
+  type FireEmergencyResponse
+} from "../lib/api";
 
 interface Message {
   text: string;
@@ -29,11 +35,11 @@ const assistantFlows: Record<string, string[]> = {
     "Let me guide you to the step-by-step tutorial for this situation.",
   ],
   fire: [
-    "Stay calm, your safety comes first. 💙",
-    "Is there visible fire or just smoke?",
-    "Can you safely evacuate the building?",
-    "Do NOT use elevators. Head to the nearest exit staying low.",
-    "Let me guide you through the fire safety steps.",
+    "Stay calm, your safety comes first. �",
+    "Describe your fire emergency situation in detail.",
+    "Are there flames or just smoke? How many people are present?",
+    "I'm analyzing your situation with AI to provide the best safety steps.",
+    "Let me guide you through the critical fire safety protocol.",
   ],
   safety: [
     "I'm here for you. You're doing the right thing reaching out. 💙",
@@ -56,7 +62,6 @@ const ChatBot = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [flowIndex, setFlowIndex] = useState(0);
   const [panicLevel, setPanicLevel] = useState<PanicLevel>("stressed");
   const [isListening, setIsListening] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
@@ -181,7 +186,6 @@ const ChatBot = () => {
     // Initial assistant message
     const timer = setTimeout(() => {
       setMessages([{ text: flow[0], isUser: false }]);
-      setFlowIndex(1);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -200,78 +204,165 @@ const ChatBot = () => {
     setIsLoadingResponse(true);
 
     try {
-      // Call the backend API
-      const response = await medicalAPI.getAssessment({
-        user_input: trimmed,
-        session_id: sessionId,
-      });
+      // Check if this is a fire emergency
+      if (crisisType === 'fire') {
+        // Call Fire Emergency AI
+        const response: FireEmergencyResponse = await fireEmergencyAPI.getFireGuidance({
+          user_input: trimmed,
+          steps: 7,
+          emergency: true,
+        });
 
-      // Normalize immediate actions to handle different backend formats
-      if (response.immediate_actions) {
-        response.immediate_actions = normalizeImmediateActions(response.immediate_actions);
-        console.log('Normalized immediate actions:', response.immediate_actions);
-      }
+        // Check if there's an error in the response
+        if (response.error) {
+          throw new Error(response.error);
+        }
 
-      // Store the assessment data
-      setAssessmentData(response);
+        // Transform fire emergency response to assessment format
+        const transformedResponse: AssessmentResponse = {
+          session_id: sessionId,
+          user_prompt: trimmed,
+          crisis_type: 'fire',
+          severity_level: 'critical', // Fire is always critical
+          assessment: `Fire Emergency Situation Assessment`,
+          immediate_actions: response.steps.map((step) => ({
+            step_id: step.step_number,
+            order: step.step_number,
+            action: step.instruction,
+            is_critical: step.is_critical,
+            completed: false,
+            duration_seconds: step.duration_seconds || null,
+          })),
+          do_not_do: response.do_not_do || [],
+          escalation_required: response.emergency_contacts_needed || false,
+          who_to_contact: response.emergency_contacts_needed ? ['Fire Department (911)', 'Emergency Services'] : [],
+          escalation_reason: response.emergency_contacts_needed ? 'Fire emergency requires immediate professional assistance' : '',
+          reassurance_message: 'Stay calm. Follow these steps carefully for your safety.',
+          timestamp: new Date().toISOString(),
+        };
 
-      // Update panic level based on severity
-      if (response.severity_level === 'critical') {
+        // Store the assessment data
+        setAssessmentData(transformedResponse);
+
+        // Set panic level to critical for fire
         setPanicLevel('panic');
-      } else if (response.severity_level === 'high') {
-        setPanicLevel('stressed');
-      } else {
-        setPanicLevel('calm');
-      }
 
-      // Create response message - only show reassurance and assessment
-      const responseMessages: string[] = [];
-      
-      // Add reassurance message with emoji
-      if (response.reassurance_message) {
-        responseMessages.push(`💙 ${response.reassurance_message}`);
-      }
+        // Create response messages
+        const responseMessages: string[] = [];
+        
+        // Add reassurance message
+        responseMessages.push(`🔥 ${transformedResponse.reassurance_message}`);
 
-      // Add assessment with clear title
-      if (response.assessment) {
-        responseMessages.push(`📋 Assessment:\n\n${response.assessment}`);
-      }
+        // Add assessment
+        responseMessages.push(`📋 I'm analyzing your fire emergency situation and preparing safety steps...`);
 
-      // Add severity info
-      const severityEmoji = response.severity_level === 'critical' ? '🚨' : 
-                           response.severity_level === 'high' ? '⚠️' : 
-                           response.severity_level === 'moderate' ? '🟡' : '🟢';
-      responseMessages.push(`${severityEmoji} Severity: ${response.severity_level.toUpperCase()} | Crisis Type: ${response.crisis_type}`);
+        // Add do not do list if present
+        if (response.do_not_do && response.do_not_do.length > 0) {
+          const doNotDoText = response.do_not_do.map(item => `❌ ${item}`).join('\n');
+          responseMessages.push(`⚠️ CRITICAL - DO NOT:\n\n${doNotDoText}`);
+        }
 
-      // FOR TESTING: Add full JSON output
-      responseMessages.push(`🔍 DEBUG - Full JSON Response:\n\n${JSON.stringify(response, null, 2)}`);
+        // Add final advice
+        if (response.final_advice) {
+          responseMessages.push(`💡 ${response.final_advice}`);
+        }
 
-      // Add all response messages
-      for (let i = 0; i < responseMessages.length; i++) {
-        setTimeout(() => {
-          setMessages((prev) => [...prev, { text: responseMessages[i], isUser: false }]);
-        }, i * 600);
-      }
+        // Add all response messages with delay
+        for (let i = 0; i < responseMessages.length; i++) {
+          setTimeout(() => {
+            setMessages((prev) => [...prev, { text: responseMessages[i], isUser: false }]);
+          }, i * 600);
+        }
 
-      // If critical emergency, add a button to navigate to emergency page
-      if (response.escalation_required) {
+        // Prompt to start tutorial
         setTimeout(() => {
           setMessages((prev) => [
             ...prev,
             {
-              text: "🚨 This appears to be a critical emergency. Would you like to see emergency escalation options?",
+              text: `🚨 I've prepared ${response.steps.length} critical safety steps for you. Click "Start Step-by-Step Tutorial" below to begin.`,
               isUser: false,
             },
           ]);
-        }, responseMessages.length * 600 + 1000);
+        }, responseMessages.length * 600);
+
+      } else {
+        // Call Medical API for other crisis types
+        const response = await medicalAPI.getAssessment({
+          user_input: trimmed,
+          session_id: sessionId,
+        });
+
+        // Normalize immediate actions to handle different backend formats
+        if (response.immediate_actions) {
+          response.immediate_actions = normalizeImmediateActions(response.immediate_actions);
+          console.log('Normalized immediate actions:', response.immediate_actions);
+        }
+
+        // Store the assessment data
+        setAssessmentData(response);
+
+        // Update panic level based on severity
+        if (response.severity_level === 'critical') {
+          setPanicLevel('panic');
+        } else if (response.severity_level === 'high') {
+          setPanicLevel('stressed');
+        } else {
+          setPanicLevel('calm');
+        }
+
+        // Create response message - only show reassurance and assessment
+        const responseMessages: string[] = [];
+        
+        // Add reassurance message with emoji
+        if (response.reassurance_message) {
+          responseMessages.push(`💙 ${response.reassurance_message}`);
+        }
+
+        // Add assessment with clear title
+        if (response.assessment) {
+          responseMessages.push(`📋 Assessment:\n\n${response.assessment}`);
+        }
+
+        // Add severity info
+        const severityEmoji = response.severity_level === 'critical' ? '🚨' : 
+                             response.severity_level === 'high' ? '⚠️' : 
+                             response.severity_level === 'moderate' ? '🟡' : '🟢';
+        responseMessages.push(`${severityEmoji} Severity: ${response.severity_level.toUpperCase()} | Crisis Type: ${response.crisis_type}`);
+
+        // FOR TESTING: Add full JSON output
+        responseMessages.push(`🔍 DEBUG - Full JSON Response:\n\n${JSON.stringify(response, null, 2)}`);
+
+        // Add all response messages
+        for (let i = 0; i < responseMessages.length; i++) {
+          setTimeout(() => {
+            setMessages((prev) => [...prev, { text: responseMessages[i], isUser: false }]);
+          }, i * 600);
+        }
+
+        // If critical emergency, add a button to navigate to emergency page
+        if (response.escalation_required) {
+          setTimeout(() => {
+            setMessages((prev) => [
+              ...prev,
+              {
+                text: "🚨 This appears to be a critical emergency. Would you like to see emergency escalation options?",
+                isUser: false,
+              },
+            ]);
+          }, responseMessages.length * 600 + 1000);
+        }
       }
 
     } catch (error) {
       console.error('Error getting assessment:', error);
+      const errorMessage = crisisType === 'fire' 
+        ? "I apologize, but I'm having trouble connecting to the fire emergency assistant. In case of fire, call 911 immediately and evacuate safely!"
+        : "I apologize, but I'm having trouble connecting to the medical assistant. Please ensure you're connected to the internet and try again. In case of emergency, call 911 immediately.";
+      
       setMessages((prev) => [
         ...prev,
         {
-          text: "I apologize, but I'm having trouble connecting to the medical assistant. Please ensure you're connected to the internet and try again. In case of emergency, call 911 immediately.",
+          text: errorMessage,
           isUser: false,
         },
       ]);
@@ -282,16 +373,47 @@ const ChatBot = () => {
   };
 
 
-  const quickPresets = [
-    "Someone unconscious",
-    "Fire nearby",
-    "Heavy bleeding",
-    "Chest pain",
-    "Difficulty breathing",
-    "Severe burn",
-    "Broken bone",
-    "Choking",
-  ];
+  // Quick presets based on crisis type
+  const quickPresetsMap: Record<string, string[]> = {
+    medical: [
+      "Someone unconscious",
+      "Heavy bleeding",
+      "Chest pain",
+      "Difficulty breathing",
+      "Severe burn",
+      "Broken bone",
+      "Choking",
+      "Heart attack symptoms",
+    ],
+    fire: [
+      "Fire in kitchen",
+      "Smoke in building",
+      "Electrical fire",
+      "Can't evacuate safely",
+      "Person trapped inside",
+      "Fire spreading quickly",
+      "Smoke inhalation",
+      "Exit blocked",
+    ],
+    safety: [
+      "Feeling threatened",
+      "Domestic violence",
+      "Being followed",
+      "Unsafe location",
+      "Need safe shelter",
+      "Stalking incident",
+    ],
+    other: [
+      "Multiple emergencies",
+      "Confused situation",
+      "Natural disaster",
+      "Chemical spill",
+      "Gas leak",
+      "Severe weather",
+    ],
+  };
+
+  const quickPresets = quickPresetsMap[crisisType] || quickPresetsMap.other;
 
   const toggleVoice = () => {
     if (!recognitionRef.current) {
@@ -343,9 +465,6 @@ const ChatBot = () => {
     }
     
     const isLast = currentStep === sortedActions.length - 1;
-    
-    // Estimate timer seconds based on action text length (default 15 seconds)
-    const estimatedSeconds = Math.max(15, Math.min(60, Math.ceil((step.action?.length || 100) / 8)));
 
     // If showing emergency contacts at the end
     if (showEmergencyContacts && isLast) {
