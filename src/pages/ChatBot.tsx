@@ -290,7 +290,7 @@ const ChatBot = () => {
             onClick={requestLocation}
             className="inline-flex items-center justify-center rounded-lg border border-border/50 bg-background/70 px-3 py-1.5 text-xs sm:text-sm font-medium text-foreground transition-all hover:bg-accent/60"
           >
-            {isLocating ? "Fetching..." : "Share location"}
+            {isLocating ? "Fetching..." : "Get Location"}
           </button>
         </div>
       </div>
