@@ -543,7 +543,7 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 ## Useful Links
 
 - **Frontend Repository**: [https://github.com/AustinVarshney/4Unknowns_AMUHACKS5.0](https://github.com/AustinVarshney/4Unknowns_AMUHACKS5.0)
-- **Backend Repository**: [https://github.com/rupeshv2121/4Unknowns_AMUHACKS5.0](https://github.com/rupeshv2121/4Unknowns_AMUHACKS5.0) *(update link)*
+- **Backend Repository**: [https://github.com/rupeshv2121/4Unknowns_AMUHACKS5.0](https://github.com/rupeshv2121/4Unknowns_AMUHACKS5.0)
 - **Live Demo**: [https://calm-path-frontend.vercel.app/](https://calm-path-frontend.vercel.app/)
 - **Demo Video**: [https://youtu.be/zTNmNLoI55w?si=NgDbHv9-rawPYuqQ](https://youtu.be/zTNmNLoI55w?si=NgDbHv9-rawPYuqQ)
 
