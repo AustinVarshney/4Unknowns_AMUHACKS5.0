@@ -28,7 +28,6 @@ Visit `http://localhost:5173`
 - [Application Pages](#application-pages)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [Available Scripts](#available-scripts)
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
 - [Application Flow](#application-flow)
@@ -42,7 +41,6 @@ Visit `http://localhost:5173`
 - [Future Enhancements](#future-enhancements)
 - [Technology Stack Summary](#-technology-stack-summary)
 - [Useful Links](#-useful-links)
-- [License](#-license)
 
 ## Feature Highlights
 
@@ -63,7 +61,7 @@ Visit `http://localhost:5173`
 ## Key Features
 
 ### Crisis Guidance System
-- **Multi-Crisis Support**: Handle Medical, Fire, Personal Safety, Financial, and Other emergencies
+- **Multi-Crisis Support**: Handle Medical, Fire, Financial, and Other emergencies
 - **AI-Powered Medical Assessment**: Real-time backend integration for medical crisis evaluation
 - **Financial Crisis Support**: Debt counseling, resource links, and financial guidance
 - **Intelligent Chat Interface**: Natural conversational flow with streaming text effects
@@ -76,7 +74,6 @@ Visit `http://localhost:5173`
 - **Multi-Language Support**: Hindi and English speech recognition
 - **Real-time Translation**: Hindi-to-English translation using MyMemory API
 - **Text-to-Speech**: Audio playback of tutorial instructions for accessibility
-- **Streaming Text Effects**: Word-by-word typing animation for natural conversation flow
 
 ### Interactive Tutorials
 - **Step-by-Step Instructions**: Clear, timed guidance for each crisis type
@@ -98,13 +95,11 @@ Visit `http://localhost:5173`
 
 ### Medical Assessment Features
 - **Real-time Backend Integration**: FastAPI backend for medical crisis evaluation
-- **Structured Assessment Display**: Organized sections with progressive animations
 - **Severity Classification**: Critical, High, Moderate, Low severity indicators
 - **Immediate Action Steps**: Numbered, ordered steps with critical flags
 - **Safety Warnings**: "Do NOT Do" warnings to prevent dangerous actions
 - **Escalation Alerts**: Automatic detection when emergency services are needed
 - **Reassurance Messages**: Calming emotional support throughout the crisis
-- **Financial Resources**: Support links for financial crisis assistance
 - **Debug Mode**: Raw JSON toggle for testing and development
 
 ### Emergency Features
@@ -212,18 +207,6 @@ Over 48 accessible, customizable components including:
    ```
    The app will open at `http://localhost:5173`
 
-## Available Scripts
-
-```bash
-npm run dev          # Start development server with hot reload
-npm run build        # Production build
-npm run build:dev    # Development build with source maps
-npm run preview      # Preview production build locally
-npm run lint         # Run ESLint for code quality
-npm run test         # Run unit tests with Vitest
-npm run test:watch   # Run tests in watch mode
-```
-
 ## Project Structure
 
 ```
@@ -313,19 +296,6 @@ Tutorial Guide (/tutorial/:type) ← Predefined steps
 - `/contacts` - Emergency contact management
 - `/first-aid` - Quick first aid reference
 
-## Browser Compatibility
-
-### Recommended Browsers
-- **Chrome/Edge** 90+ (Best support for Speech API)
-- **Safari** 14+ (Limited Hindi speech recognition)
-- **Firefox** 88+ (Text features fully supported)
-
-### Required Browser Features
-- **Speech Recognition API** - For voice input (Chrome/Edge recommended)
-- **Geolocation API** - For location sharing
-- **LocalStorage** - For data persistence
-- **Modern CSS** - Grid, Flexbox, Custom Properties
-
 ## Configuration
 
 ### Environment Variables
@@ -409,19 +379,6 @@ Response: { "status": "healthy", "version": "1.0.0" }
 3. **Response Format**
    Ensure your backend returns JSON matching the `AssessmentResponse` interface
 
-### Vite Configuration
-The project uses standard Vite configuration optimized for React:
-- React SWC plugin for fast refresh
-- Path aliases configured for clean imports
-- Production optimizations enabled
-
-### Tailwind Configuration
-Custom theme extensions:
-- Container queries
-- Typography plugin
-- Custom animations (accordion-down, accordion-up)
-- Extended color palette for crisis types
-
 ## Building for Production
 
 ### Standard Build
@@ -492,34 +449,6 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 - **Install Command**: `npm install`
 - **Node Version**: 18.x
 
-## Performance & Technical Details
-
-### Bundle Size Optimization
-- **Code Splitting**: React Router lazy loading for pages
-- **Tree Shaking**: Unused code eliminated during build
-- **Asset Optimization**: Images and icons optimized
-- **Minification**: JavaScript and CSS compressed
-- **Gzip Compression**: Enabled on Vercel deployment
-
-### Animation Performance
-- **Framer Motion**: GPU-accelerated animations
-- **Progressive Reveals**: Staggered delays prevent layout shifts
-- **Will-change**: CSS hints for smooth transforms
-- **RequestAnimationFrame**: Smooth 60fps animations
-
-### State Management
-- **React Hooks**: useState, useEffect, useRef for local state
-- **Navigation State**: Pass data between pages via router state
-- **LocalStorage**: Persistent data for contacts and checklist
-- **Session State**: Medical assessment data in chat flow
-
-### Accessibility
-- **ARIA Labels**: Screen reader support
-- **Keyboard Navigation**: Full keyboard accessibility
-- **Focus Management**: Proper focus indicators
-- **Color Contrast**: WCAG AA compliant
-- **Voice Alternatives**: Audio playback for critical instructions
-
 ## UI/UX Features
 
 ### Progressive Animations
@@ -549,42 +478,10 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 - Collapsible quick preset menu on mobile
 - Adaptive grid layouts for crisis cards
 
-## Troubleshooting
-
-### Common Issues
-
-**Voice input not working**
-- Ensure you're using Chrome or Edge browser
-- Check microphone permissions in browser settings
-- HTTPS required for production (localhost works for development)
-
-**Backend connection errors**
-- Verify `VITE_MEDICAL_API_URL` in `.env` file
-- Ensure backend server is running (default: `http://localhost:8000`)
-- Check CORS configuration on backend
-- Open browser console to see detailed error messages
-
-**Translation not working**
-- MyMemory API has rate limits (free tier)
-- Check network connection
-- Falls back to original text if translation fails
-
-**Styling issues after build**
-- Clear browser cache
-- Rebuild with `npm run build`
-- Check for Tailwind CSS purge configuration
-
-**LocalStorage data loss**
-- Browser private/incognito mode clears data on close
-- Check browser storage settings
-- Export emergency contacts before clearing cache
-
 ## Future Enhancements
 
 - **~~Multi-language Support~~**:  Hindi-English voice input implemented
 - **~~Financial Crisis Support~~**:  Debt counseling and resources added
-- **~~Streaming Responses~~**:  Word-by-word typing effects implemented
-- **~~Dynamic Panic Levels~~**:  Severity-based panic indicator updates
 - **Analytics Dashboard**: Track usage patterns and crisis types
 - **Push Notifications**: Browser notifications for safety alerts
 - **Account System**: User profiles and crisis history
