@@ -1,4 +1,4 @@
-import { ArrowLeft, Mic, Send } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp, Mic, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ChatBubble from "../components/ChatBubble";
@@ -60,6 +60,7 @@ const ChatBot = () => {
   const [isLocating, setIsLocating] = useState(false);
   const [locationLabel, setLocationLabel] = useState("Location not shared");
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [showAllPresets, setShowAllPresets] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -228,6 +229,10 @@ const ChatBot = () => {
     "Fire nearby",
     "Heavy bleeding",
     "Chest pain",
+    "Difficulty breathing",
+    "Severe burn",
+    "Broken bone",
+    "Choking",
   ];
 
   const toggleVoice = () => {
@@ -321,18 +326,59 @@ const ChatBot = () => {
 
       {/* Input - Fixed at bottom */}
       <div className="flex-shrink-0 relative border-t border-border/40 bg-gradient-to-b from-card/60 to-card/80 backdrop-blur-xl px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
-        <div className="mx-auto mb-3 flex max-w-4xl lg:max-w-5xl flex-wrap gap-2">
-          {quickPresets.map((preset) => (
+        {/* Quick Presets */}
+        <div className="mx-auto mb-3 max-w-4xl lg:max-w-5xl">
+          {/* Mobile view - scrollable or expandable */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <div className={`flex-1 ${showAllPresets ? 'overflow-visible' : 'overflow-x-auto scrollbar-hide'}`}>
+              <div className={`flex gap-2 pb-1 ${showAllPresets ? 'flex-wrap' : ''}`}>
+                {quickPresets.slice(0, showAllPresets ? quickPresets.length : 3).map((preset) => (
+                  <button
+                    key={preset}
+                    onClick={() => sendMessage(preset)}
+                    disabled={isTranslating}
+                    className="shrink-0 rounded-full border border-border/50 bg-background/80 px-3 py-1.5 text-xs sm:text-sm font-medium text-foreground transition-all hover:bg-accent/60 hover:scale-105 active:scale-95 disabled:opacity-50"
+                  >
+                    {preset}
+                  </button>
+                ))}
+                {quickPresets.length > 3 && !showAllPresets && (
+                  <span className="shrink-0 flex items-center px-2 text-xs text-muted-foreground">
+                    +{quickPresets.length - 3} more
+                  </span>
+                )}
+              </div>
+            </div>
+            {/* Expand/Collapse button */}
             <button
-              key={preset}
-              onClick={() => sendMessage(preset)}
-              disabled={isTranslating}
-              className="rounded-full border border-border/50 bg-background/80 px-3 py-1.5 text-xs sm:text-sm font-medium text-foreground transition-all hover:bg-accent/60 disabled:opacity-50"
+              onClick={() => setShowAllPresets(!showAllPresets)}
+              className="shrink-0 flex h-8 w-8 items-center justify-center rounded-full border border-border/50 bg-background/80 text-muted-foreground transition-all hover:bg-accent/60 hover:text-foreground hover:scale-110 active:scale-95"
+              aria-label={showAllPresets ? "Show less" : "Show more"}
             >
-              {preset}
+              {showAllPresets ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronUp className="h-4 w-4" />
+              )}
             </button>
-          ))}
+          </div>
+          
+          {/* Desktop view - all presets wrapped */}
+          <div className="hidden lg:flex lg:flex-wrap lg:gap-2">
+            {quickPresets.map((preset) => (
+              <button
+                key={preset}
+                onClick={() => sendMessage(preset)}
+                disabled={isTranslating}
+                className="rounded-full border border-border/50 bg-background/80 px-3 py-1.5 text-xs sm:text-sm font-medium text-foreground transition-all hover:bg-accent/60 hover:scale-105 active:scale-95 disabled:opacity-50"
+              >
+                {preset}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* Input area */}
         <div className="mx-auto flex max-w-4xl lg:max-w-5xl items-center gap-3 lg:gap-4">
           <button
             onClick={toggleVoice}
