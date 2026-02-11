@@ -5,25 +5,23 @@ import { useNavigate } from "react-router-dom";
 import PageWrapper from "../components/PageWrapper";
 
 const patterns = [
-  { name: "Box Breathing", inhale: 4, hold1: 4, exhale: 4, hold2: 4, desc: "Equal intervals. Great for focus & calm." },
-  { name: "4-7-8 Relaxing", inhale: 4, hold1: 7, exhale: 8, hold2: 0, desc: "Deep relaxation technique." },
-  { name: "Quick Calm", inhale: 3, hold1: 3, exhale: 6, hold2: 0, desc: "Fast relief for acute stress." },
+  { name: "Box Breathing", inhale: 4, hold: 4, exhale: 4, desc: "Equal intervals. Great for focus & calm." },
+  { name: "4-7-8 Relaxing", inhale: 4, hold: 7, exhale: 8, desc: "Deep relaxation technique." },
+  { name: "Quick Calm", inhale: 3, hold: 3, exhale: 6, desc: "Fast relief for acute stress." },
 ];
 
-type Phase = "inhale" | "hold1" | "exhale" | "hold2";
+type Phase = "inhale" | "hold" | "exhale";
 
 const phaseLabels: Record<Phase, string> = {
   inhale: "Breathe In",
-  hold1: "Hold",
+  hold: "Hold",
   exhale: "Breathe Out",
-  hold2: "Hold",
 };
 
 const phaseColors: Record<Phase, string> = {
   inhale: "hsl(var(--calm))",
-  hold1: "hsl(var(--stressed))",
+  hold: "hsl(var(--stressed))",
   exhale: "hsl(var(--primary))",
-  hold2: "hsl(var(--muted-foreground))",
 };
 
 const BreathingExercise = () => {
@@ -31,14 +29,14 @@ const BreathingExercise = () => {
   const [patternIdx, setPatternIdx] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [phase, setPhase] = useState<Phase>("inhale");
-  const [countdown, setCountdown] = useState(0);
-  const [cycles, setCycles] = useState(0);
+  const [countdown, setCountdown] = useState(patterns[0].inhale);
+  const [cycles, setCycles] = useState(1);
 
   const pattern = patterns[patternIdx];
 
   const phaseDuration = useCallback(
     (p: Phase) => {
-      const map = { inhale: pattern.inhale, hold1: pattern.hold1, exhale: pattern.exhale, hold2: pattern.hold2 };
+      const map = { inhale: pattern.inhale, hold: pattern.hold, exhale: pattern.exhale };
       return map[p];
     },
     [pattern]
@@ -46,26 +44,25 @@ const BreathingExercise = () => {
 
   const nextPhase = useCallback(
     (current: Phase): Phase => {
-      const order: Phase[] = ["inhale", "hold1", "exhale", "hold2"];
+      const order: Phase[] = ["inhale", "hold", "exhale"];
       const idx = order.indexOf(current);
-      for (let i = 1; i <= 4; i++) {
-        const next = order[(idx + i) % 4];
-        if (phaseDuration(next) > 0) {
-          if (next === "inhale" && current !== "inhale") setCycles((c) => c + 1);
-          return next;
-        }
+      const next = order[(idx + 1) % 3];
+      // Increment cycle when starting a new inhale
+      if (next === "inhale" && current !== "inhale") {
+        setCycles((c) => c + 1);
       }
-      return "inhale";
+      return next;
     },
-    [phaseDuration]
+    []
   );
 
+  // Only reset when pattern changes
   useEffect(() => {
-    if (!isRunning) return;
     setPhase("inhale");
     setCountdown(pattern.inhale);
-    setCycles(0);
-  }, [isRunning, patternIdx]);
+    setCycles(1);
+    setIsRunning(false);
+  }, [patternIdx, pattern.inhale]);
 
   useEffect(() => {
     if (!isRunning) return;
@@ -84,8 +81,8 @@ const BreathingExercise = () => {
   const reset = () => {
     setIsRunning(false);
     setPhase("inhale");
-    setCountdown(0);
-    setCycles(0);
+    setCountdown(pattern.inhale);
+    setCycles(1);
   };
 
   return (
@@ -170,7 +167,7 @@ const BreathingExercise = () => {
 
               {isRunning && (
                 <p className="mt-1 text-xs text-muted-foreground sm:text-sm lg:text-base">
-                  {cycles} {cycles === 1 ? 'cycle' : 'cycles'} completed
+                  Cycle {cycles}
                 </p>
               )}
             </div>
