@@ -4,9 +4,10 @@ interface ChatBubbleProps {
   message: string;
   isUser: boolean;
   index?: number;
+  isStreaming?: boolean;
 }
 
-const ChatBubble = ({ message, isUser, index = 0 }: ChatBubbleProps) => (
+const ChatBubble = ({ message, isUser, index = 0, isStreaming = false }: ChatBubbleProps) => (
   <motion.div
     initial={{ opacity: 0, y: 8, scale: 0.95 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -21,6 +22,15 @@ const ChatBubble = ({ message, isUser, index = 0 }: ChatBubbleProps) => (
       }`}
     >
       {message}
+      {isStreaming && (
+        <motion.span
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+          className="ml-0.5 inline-block"
+        >
+          █
+        </motion.span>
+      )}
     </div>
   </motion.div>
 );

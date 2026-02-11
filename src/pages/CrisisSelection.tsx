@@ -20,13 +20,6 @@ const crises = [
     accent: "from-panic/25 via-transparent to-transparent",
   },
   {
-    emoji: "👮",
-    title: "Personal Safety",
-    description: "Threats, unsafe situations, support",
-    type: "safety",
-    accent: "from-stressed/25 via-transparent to-transparent",
-  },
-  {
     emoji: "💰",
     title: "Financial Crisis",
     description: "Money troubles, debt, financial help",
@@ -78,7 +71,7 @@ const CrisisSelection = () => {
           </p>
         </motion.div>
 
-        <div className="grid w-full max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:gap-6">
+        <div className="grid w-full max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6 xl:gap-5">
           {crises.map((c, i) => (
             <CrisisCard
               key={c.type}
