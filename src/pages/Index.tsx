@@ -1,15 +1,15 @@
 import { motion } from "framer-motion";
 import {
-    ArrowRight,
-    BookOpen,
-    ClipboardCheck,
-    Heart,
-    Mic,
-    Phone,
-    Shield,
-    Sparkles,
-    Users,
-    Wind,
+  ArrowRight,
+  BookOpen,
+  ClipboardCheck,
+  Heart,
+  Mic,
+  Phone,
+  Shield,
+  Sparkles,
+  Users,
+  Wind,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PageWrapper from "../components/PageWrapper";
@@ -181,7 +181,7 @@ const Index = () => {
               </div>
               <button
                 onClick={() => navigate("/emergency")}
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-panic px-4 py-3 text-sm font-semibold text-panic-foreground transition-colors hover:bg-panic/90"
+                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-panic px-4 py-3 text-sm text-white font-bold transition-colors hover:bg-panic/90"
               >
                 Connect now
               </button>
