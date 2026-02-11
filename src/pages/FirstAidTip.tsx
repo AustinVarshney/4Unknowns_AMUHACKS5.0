@@ -84,13 +84,14 @@ const FirstAidTips = () => {
           Tap a topic for step-by-step guidance.
         </p>
 
-        <Accordion type="single" collapsible className="grid gap-3 sm:grid-cols-1 lg:grid-cols-2 lg:gap-4">
+        <Accordion type="single" collapsible className="space-y-3 lg:columns-2 lg:gap-4 lg:space-y-0">
           {tips.map((tip, i) => (
             <motion.div
               key={tip.title}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
+              className="mb-3 break-inside-avoid lg:mb-4"
             >
               <AccordionItem
                 value={tip.title}
