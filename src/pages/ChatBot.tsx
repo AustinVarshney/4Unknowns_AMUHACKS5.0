@@ -2,18 +2,45 @@ import { ArrowLeft, ChevronDown, ChevronUp, Mic, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ChatBubble from "../components/ChatBubble";
+import MedicalAssessmentBubble from "../components/MedicalAssessmentBubble";
 import PageWrapper from "../components/PageWrapper";
 import PanicIndicator, { type PanicLevel } from "../components/PanicIndicator";
 
 interface Message {
-  text: string;
+  text?: string;
   isUser: boolean;
+  medicalData?: AssessmentResponse;
+}
+
+interface AssessmentResponse {
+  assessment?: string;
+  immediate_actions?: Array<{
+    step_id?: number | string;
+    title?: string;
+    instruction?: string;
+    critical?: boolean;
+    order?: number;
+    action?: string;
+    is_critical?: boolean;
+  }>;
+  do_not_do?: string[];
+  escalation_required?: boolean;
+  who_to_contact?: string[];
+  escalation_reason?: string;
+  reassurance_message?: string;
+  escalation?: {
+    required?: boolean;
+    who_to_contact?: string[];
+    reason?: string;
+  };
+  financial_resources?: string[];
 }
 
 const crisisLabels: Record<string, string> = {
   medical: "Medical Emergency",
   fire: "Fire Emergency",
   safety: "Personal Safety",
+  financial: "Financial Crisis",
   other: "Other Crisis",
 };
 
@@ -39,6 +66,13 @@ const assistantFlows: Record<string, string[]> = {
     "Stay calm, this can be handled. I'll guide you step by step.",
     "Let me walk you through the safety protocol.",
   ],
+  financial: [
+    "I'm here to help you with your financial situation. 💙",
+    "Can you briefly describe your main financial concern?",
+    "Remember, financial difficulties are temporary and manageable.",
+    "I'll provide you with resources and steps to address this.",
+    "Let's work through this together.",
+  ],
   other: [
     "I'm listening. Tell me what's happening. 💙",
     "Can you describe the situation briefly?",
@@ -57,11 +91,17 @@ const ChatBot = () => {
   const [panicLevel, setPanicLevel] = useState<PanicLevel>("stressed");
   const [isListening, setIsListening] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
+  const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
   const [showAllPresets, setShowAllPresets] = useState(false);
+  const [showRawJson, setShowRawJson] = useState(false);
+  const [lastRawJson, setLastRawJson] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
 
   const flow = assistantFlows[crisisType] || assistantFlows.other;
+  const apiBaseUrl = import.meta.env.VITE_MEDICAL_API_URL || "http://localhost:8000";
+  const isMedicalFlow = crisisType === "medical";
+  const isFinancialFlow = crisisType === "financial";
 
   // Translate text from Hindi to English
   const translateToEnglish = async (text: string): Promise<string> => {
@@ -133,8 +173,13 @@ const ChatBot = () => {
   useEffect(() => {
     // Initial assistant message
     const timer = setTimeout(() => {
-      setMessages([{ text: flow[0], isUser: false }]);
-      setFlowIndex(1);
+      const starter = isMedicalFlow || isFinancialFlow
+        ? "Tell me what is happening, and I will guide you step by step."
+        : flow[0];
+      setMessages([{ text: starter, isUser: false }]);
+      if (!isMedicalFlow && !isFinancialFlow) {
+        setFlowIndex(1);
+      }
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -143,32 +188,70 @@ const ChatBot = () => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = (messageText?: string) => {
+  // Removed formatAssessment - now using MedicalAssessmentBubble component
+
+  const sendMessage = async (messageText?: string) => {
     const trimmed = (messageText ?? input).trim();
     if (!trimmed) return;
     const userMsg: Message = { text: trimmed, isUser: true };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
 
-    // Simulate response
-    setTimeout(() => {
-      if (flowIndex < flow.length) {
-        setMessages((prev) => [...prev, { text: flow[flowIndex], isUser: false }]);
+    if (isMedicalFlow || isFinancialFlow) {
+      const endpoint = isMedicalFlow ? "/medical" : "/chat";
+      try {
+        setIsAwaitingResponse(true);
+        const response = await fetch(`${apiBaseUrl}${endpoint}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_input: trimmed }),
+        });
 
-        // Last message → navigate to tutorial
-        if (flowIndex === flow.length - 1) {
-          setTimeout(() => navigate(`/tutorial/${crisisType}`), 2000);
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(
+            `Request failed with status ${response.status}${errorText ? `: ${errorText}` : ""}`
+          );
         }
-        setFlowIndex((i) => i + 1);
+
+        const data: AssessmentResponse = await response.json();
+        setLastRawJson(JSON.stringify(data, null, 2));
+        // Store structured data instead of formatted text
+        setMessages((prev) => [...prev, { isUser: false, medicalData: data }]);
+      } catch (error) {
+        console.error("Medical assessment error:", error);
+        setLastRawJson(JSON.stringify({ error: String(error) }, null, 2));
+        setMessages((prev) => [
+          ...prev,
+          {
+            text: "I could not reach the medical assistant right now. Please try again in a moment.",
+            isUser: false,
+          },
+        ]);
+      } finally {
+        setIsAwaitingResponse(false);
       }
-    }, 800);
+    } else {
+      // Simulate response
+      setTimeout(() => {
+        if (flowIndex < flow.length) {
+          setMessages((prev) => [...prev, { text: flow[flowIndex], isUser: false }]);
+
+          // Last message → navigate to tutorial
+          if (flowIndex === flow.length - 1) {
+            setTimeout(() => navigate(`/tutorial/${crisisType}`), 2000);
+          }
+          setFlowIndex((i) => i + 1);
+        }
+      }, 800);
+    }
 
     // Simulate panic level changes
     if (panicLevel === "stressed" && messages.length > 3) setPanicLevel("calm");
   };
 
 
-  const quickPresets = [
+  const quickPresets = isMedicalFlow ? [
     "Someone unconscious",
     "Fire nearby",
     "Heavy bleeding",
@@ -176,8 +259,14 @@ const ChatBot = () => {
     "Difficulty breathing",
     "Severe burn",
     "Broken bone",
-    "Choking",
-  ];
+  ] : isFinancialFlow ? [
+    "Need financial help",
+    "Debt problems",
+    "Lost my job",
+    "Can't pay bills",
+    "Emergency funds needed",
+    "Loan assistance",
+  ] : [];
 
   const toggleVoice = () => {
     if (!recognitionRef.current) {
@@ -239,15 +328,19 @@ const ChatBot = () => {
               </div>
             </div>
           )}
-          {messages.map((m, i) => (
-            <ChatBubble key={i} message={m.text} isUser={m.isUser} index={i} />
-          ))}
+          {messages.map((m, i) => {
+            if (m.medicalData) {
+              return <MedicalAssessmentBubble key={i} data={m.medicalData} index={i} showRawJson={showRawJson} />;
+            }
+            return <ChatBubble key={i} message={m.text || ""} isUser={m.isUser} index={i} />;
+          })}
         </div>
       </div>
 
       {/* Input - Fixed at bottom */}
       <div className="flex-shrink-0 relative border-t border-border/40 bg-gradient-to-b from-card/60 to-card/80 backdrop-blur-xl px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
         {/* Quick Presets */}
+        {quickPresets.length > 0 && (
         <div className="mx-auto mb-3 max-w-4xl lg:max-w-5xl">
           {/* Mobile view - scrollable or expandable */}
           <div className="flex items-center gap-2 lg:hidden">
@@ -298,6 +391,30 @@ const ChatBot = () => {
             ))}
           </div>
         </div>
+        )}
+
+        {/* Debug toggle */}
+        {(isMedicalFlow || isFinancialFlow) && (
+          <div className="mx-auto mb-3 flex max-w-4xl lg:max-w-5xl items-center justify-end">
+            <label className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+              <input
+                type="checkbox"
+                checked={showRawJson}
+                onChange={(e) => setShowRawJson(e.target.checked)}
+                className="h-4 w-4 rounded border border-border bg-background"
+              />
+              Show raw JSON
+            </label>
+          </div>
+        )}
+        {(isMedicalFlow || isFinancialFlow) && showRawJson && (
+          <div className="mx-auto mb-4 max-w-4xl lg:max-w-5xl rounded-xl border border-border/60 bg-background/80 p-3 text-xs sm:text-sm">
+            <div className="mb-2 text-[11px] uppercase tracking-[0.25em] text-muted-foreground">Raw response</div>
+            <pre className="max-h-48 overflow-auto whitespace-pre-wrap break-words font-mono text-foreground">
+              {lastRawJson || "No response yet."}
+            </pre>
+          </div>
+        )}
 
         {/* Input area */}
         <div className="mx-auto flex max-w-4xl lg:max-w-5xl items-center gap-3 lg:gap-4">
@@ -322,7 +439,7 @@ const ChatBot = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               placeholder="Type your response…"
-              disabled={isTranslating}
+              disabled={isTranslating || isAwaitingResponse}
               className={`w-full rounded-2xl border border-input/50 bg-background/80 backdrop-blur-sm px-5 lg:px-6 py-3.5 lg:py-4 text-sm sm:text-base lg:text-base text-foreground placeholder:text-muted-foreground shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus:shadow-md disabled:opacity-60 ${
                 isPanic ? "text-base sm:text-lg lg:text-xl py-4 lg:py-5" : ""
               }`}
@@ -330,7 +447,7 @@ const ChatBot = () => {
           </div>
           <button
             onClick={() => sendMessage()}
-            disabled={!input.trim() || isTranslating}
+            disabled={!input.trim() || isTranslating || isAwaitingResponse}
             className="flex h-12 w-12 lg:h-14 lg:w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-lg transition-all hover:from-pink-600 hover:to-pink-700 hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed"
             aria-label="Send"
             title="Send message"
@@ -338,10 +455,14 @@ const ChatBot = () => {
             <Send className="h-5 w-5 lg:h-6 lg:w-6" />
           </button>
         </div>
-        {(isListening || isTranslating) && (
+        {(isListening || isTranslating || isAwaitingResponse) && (
           <div className="mt-3 text-center">
             <p className="text-xs sm:text-sm lg:text-base text-muted-foreground animate-pulse font-medium">
-              {isListening ? "🎤 Speak Now in Hindi or English..." : "Writing ..."}
+              {isListening
+                ? "🎤 Speak Now in Hindi or English..."
+                : isAwaitingResponse
+                ? "Thinking..."
+                : "Writing ..."}
             </p>
           </div>
         )}

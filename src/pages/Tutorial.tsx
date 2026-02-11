@@ -1,14 +1,16 @@
-import { useState, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, ChevronRight, Volume2 } from "lucide-react";
+import { useCallback, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PageWrapper from "../components/PageWrapper";
 import TimerComponent from "../components/TimerComponent";
-import { ArrowLeft, Volume2, ChevronRight } from "lucide-react";
 
 interface Step {
   instruction: string;
   timerSeconds?: number;
   audio?: string;
+  title?: string;
+  critical?: boolean;
 }
 
 const tutorialSteps: Record<string, Step[]> = {
@@ -45,7 +47,21 @@ const tutorialSteps: Record<string, Step[]> = {
 const Tutorial = () => {
   const { crisisType = "other" } = useParams();
   const navigate = useNavigate();
-  const steps = tutorialSteps[crisisType] || tutorialSteps.other;
+  const location = useLocation();
+  
+  // Check if medical data was passed from the chatbot
+  const medicalData = location.state?.medicalData;
+  
+  // Convert medical actions to tutorial steps if available
+  const medicalSteps: Step[] = medicalData?.immediate_actions?.map((action: any) => ({
+    instruction: action.instruction || action.title || "Follow this step",
+    title: action.title,
+    timerSeconds: action.duration_seconds || undefined,
+    critical: action.critical
+  })) || [];
+  
+  // Use medical steps if available, otherwise use predefined tutorial steps
+  const steps = medicalSteps.length > 0 ? medicalSteps : (tutorialSteps[crisisType] || tutorialSteps.other);
   const [currentStep, setCurrentStep] = useState(0);
   const [timerDone, setTimerDone] = useState(false);
 
@@ -65,12 +81,16 @@ const Tutorial = () => {
 
   const speakText = () => {
     if ("speechSynthesis" in window) {
-      const utterance = new SpeechSynthesisUtterance(step.instruction);
+      const textToSpeak = step.title ? `${step.title}. ${step.instruction}` : step.instruction;
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
       utterance.rate = 0.85;
       utterance.pitch = 1;
       window.speechSynthesis.speak(utterance);
     }
   };
+
+  // Show debug info if medical data was passed
+  const isMedicalTutorial = medicalSteps.length > 0;
 
   return (
     <PageWrapper className="flex flex-col px-6 py-8">
@@ -84,6 +104,7 @@ const Tutorial = () => {
       <div className="mb-4 text-center">
         <span className="text-sm text-muted-foreground">
           Step {currentStep + 1} of {steps.length}
+          {isMedicalTutorial && <span className="ml-2 text-xs text-primary">(Medical AI Guided)</span>}
         </span>
         {/* Progress bar */}
         <div className="mx-auto mt-2 h-1.5 max-w-xs overflow-hidden rounded-full bg-secondary">
@@ -104,8 +125,24 @@ const Tutorial = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.3 }}
-            className="w-full rounded-2xl border border-border bg-card p-8 text-center"
+            className={`w-full rounded-2xl border p-8 text-center ${
+              step.critical 
+                ? 'border-red-500/50 bg-red-500/5' 
+                : 'border-border bg-card'
+            }`}
           >
+            {step.title && (
+              <div className="mb-4 flex items-center justify-center gap-2">
+                <h3 className="text-xl sm:text-2xl font-bold text-card-foreground">
+                  {step.title}
+                </h3>
+                {step.critical && (
+                  <span className="rounded-full bg-red-500 px-3 py-1 text-xs font-bold uppercase text-white">
+                    Critical
+                  </span>
+                )}
+              </div>
+            )}
             <p className="text-lg font-medium leading-relaxed text-card-foreground md:text-xl">
               {step.instruction}
             </p>
