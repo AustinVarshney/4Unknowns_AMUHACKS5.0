@@ -1,30 +1,30 @@
-# 🧘 CalmPath - Personal Crisis Decision Assistant
+# CalmPath - Personal Crisis Decision Assistant
 
 > *Your compassionate guide through emergencies - helping you find clarity when it matters most.*
 
 CalmPath is a modern, mobile-first crisis management application designed to help people manage emergencies with clear guidance and emotional support. Built with React, TypeScript, and powered by an intuitive AI-like conversational interface, CalmPath provides step-by-step instructions, calming techniques, and emergency escalation support during high-stress situations.
 
-## 🌟 Key Features
+## Key Features
 
-### 🆘 Crisis Guidance System
+### Crisis Guidance System
 - **Multi-Crisis Support**: Handle Medical, Fire, Personal Safety, and Other emergencies
 - **AI-Powered Chat Interface**: Natural conversational flow with intelligent response system
 - **Panic-Level Tracking**: Real-time monitoring of stress levels (Calm → Stressed → Panic)
 - **Dynamic Adaptation**: Guidance adjusts based on user responses and panic indicators
 
-### 🗣️ Multimodal Communication
+### Multimodal Communication
 - **Voice Input**: Hands-free interaction using Web Speech API
 - **Multi-Language Support**: Hindi and English speech recognition
 - **Auto-Translation**: Hindi-to-English translation for seamless communication
 - **Text-to-Speech**: Audio playback of tutorial instructions for accessibility
 
-### 📚 Interactive Tutorials
+### Interactive Tutorials
 - **Step-by-Step Instructions**: Clear, timed guidance for each crisis type
 - **Audio Instructions**: Voice-guided steps for hands-free operation
 - **Progress Tracking**: Visual indicators showing current step and completion status
 - **Timer Integration**: Built-in timers for critical time-sensitive actions
 
-### 💆 Wellness & Calming Tools
+### Wellness & Calming Tools
 - **Guided Breathing Exercises**: 3 scientifically-backed breathing patterns
   - Box Breathing (4-4-4-4)
   - 4-7-8 Breathing
@@ -34,17 +34,17 @@ CalmPath is a modern, mobile-first crisis management application designed to hel
 - **Safety Checklist**: Track preparedness across Home Safety, Digital Prep, and Go-Bag items
 - **First Aid Quick Reference**: Accordion-style tips for common emergencies (cuts, burns, choking, CPR, etc.)
 
-### 🚨 Emergency Features
+### Emergency Features
 - **One-Tap Emergency Escalation**: Quick access when situations worsen
 - **Direct Emergency Contacts**: Phone links to emergency services (102/101/100/112)
 - **Live Location Sharing**: Geolocation API integration for sharing your location
 - **Post-Crisis Re-Evaluation**: "Is the situation under control?" assessment flow
 
-### 💾 Data Persistence
+### Data Persistence
 - **LocalStorage Integration**: Saves emergency contacts and safety checklist progress
 - **Session Continuity**: Maintains user data across browser sessions
 
-## 📱 Application Pages
+## Application Pages
 
 | Page | Route | Description |
 |------|-------|-------------|
@@ -60,7 +60,7 @@ CalmPath is a modern, mobile-first crisis management application designed to hel
 | **First Aid Tips** | `/first-aid` | Quick-reference accordion for common emergencies |
 | **404 Not Found** | `/*` | Error page for invalid routes |
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Core Framework
 - **React 18.3** - Modern UI library with hooks and concurrent features
@@ -105,7 +105,7 @@ Over 48 accessible, customizable components including:
 - **PostCSS** - CSS processing with Autoprefixer
 - **Vercel** - Deployment platform
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - **Node.js** 18+ (recommended: 20 LTS)
@@ -131,7 +131,7 @@ Over 48 accessible, customizable components including:
    ```
    The app will open at `http://localhost:5173`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 CalmPath_Frontend/
@@ -173,7 +173,7 @@ CalmPath_Frontend/
 └── package.json            # Project dependencies and scripts
 ```
 
-## 🔄 Application Flow
+## Application Flow
 
 ### Typical Crisis Management Flow
 ```
@@ -197,12 +197,12 @@ Emergency Escalation (/emergency) ← Direct emergency contacts
 - `/contacts` - Emergency contact management
 - `/first-aid` - Quick first aid reference
 
-## 🌐 Browser Compatibility
+## Browser Compatibility
 
 ### Recommended Browsers
-- ✅ **Chrome/Edge** 90+ (Best support for Speech API)
-- ✅ **Safari** 14+ (Limited Hindi speech recognition)
-- ✅ **Firefox** 88+ (Text features fully supported)
+- **Chrome/Edge** 90+ (Best support for Speech API)
+- **Safari** 14+ (Limited Hindi speech recognition)
+- **Firefox** 88+ (Text features fully supported)
 
 ### Required Browser Features
 - **Speech Recognition API** - For voice input (Chrome/Edge recommended)
@@ -210,7 +210,7 @@ Emergency Escalation (/emergency) ← Direct emergency contacts
 - **LocalStorage** - For data persistence
 - **Modern CSS** - Grid, Flexbox, Custom Properties
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 Create a `.env` file in the root directory if you need to customize:
@@ -232,7 +232,7 @@ Custom theme extensions:
 - Custom animations (accordion-down, accordion-up)
 - Extended color palette for crisis types
 
-## 📦 Building for Production
+## Building for Production
 
 ### Standard Build
 ```bash
@@ -256,16 +256,16 @@ npm run preview
 ```
 Serves the production build locally at `http://localhost:5173`
 
-## 🗺️ Future Enhancements
+## Future Enhancements
 
-- 🌍 **Multi-language Support**: Add more regional languages
-- 📊 **Analytics Dashboard**: Track usage patterns and crisis types
-- 🔔 **Push Notifications**: Browser notifications for safety alerts
-- 👥 **Account System**: User profiles and crisis history
-- 📱 **Mobile App**: Native iOS/Android versions
-- 🏥 **Hospital Finder**: Nearby hospital locator with directions
-- 🚗 **Ride Booking**: Integrated emergency transportation
-- 📝 **Crisis Logs**: Save and review past emergency responses
+- **Multi-language Support**: Add more regional languages
+- **Analytics Dashboard**: Track usage patterns and crisis types
+- **Push Notifications**: Browser notifications for safety alerts
+- **Account System**: User profiles and crisis history
+- **Mobile App**: Native iOS/Android versions
+- **Hospital Finder**: Nearby hospital locator with directions
+- **Ride Booking**: Integrated emergency transportation
+- **Crisis Logs**: Save and review past emergency responses
 
 ## 🔗 Useful Links
 
