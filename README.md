@@ -107,9 +107,6 @@ Visit `http://localhost:5173`
   - 4-7-8 Breathing
   - Quick Calm (2-3-4)
 - **Animated Visual Guides**: Breathing circle that scales with inhale/exhale cycles
-- **Emergency Contacts Manager**: Save and manage trusted contacts with persistent storage
-- **Safety Checklist**: Track preparedness across Home Safety, Digital Prep, and Go-Bag items
-- **First Aid Quick Reference**: Accordion-style tips for common emergencies (cuts, burns, choking, CPR, etc.)
 
 ![Alt Text](./src/assets/wellness&preparedness.jpeg)
 
@@ -121,6 +118,12 @@ Visit `http://localhost:5173`
 - **Escalation Alerts**: Automatic detection when emergency services are needed
 - **Reassurance Messages**: Calming emotional support throughout the crisis
 - **Debug Mode**: Raw JSON toggle for testing and development
+![Alt Text](./src/assets/Chat1.jpeg)
+![Alt Text](./src/assets/chat2.jpeg)
+![Alt Text](./src/assets/chat3.jpeg)
+![Alt Text](./src/assets/chat4.jpeg)
+![Alt Text](./src/assets/chat5.jpeg)
+
 
 ### Emergency Features
 - **One-Tap Emergency Escalation**: Quick access when situations worsen

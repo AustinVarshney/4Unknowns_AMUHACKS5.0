@@ -271,9 +271,7 @@ const ChatBot = () => {
       "Chest pain",
       "Difficulty breathing",
       "Severe burn",
-      "Broken bone",
-      "Choking",
-      "Heart attack symptoms",
+      "Broken bone"
     ],
     fire: [
       "Fire in kitchen",
