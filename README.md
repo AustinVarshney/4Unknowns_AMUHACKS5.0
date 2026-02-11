@@ -480,8 +480,8 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 
 ## Future Enhancements
 
-- **~~Multi-language Support~~**:  Hindi-English voice input implemented
-- **~~Financial Crisis Support~~**:  Debt counseling and resources added
+- **Multi-language Support**:  Hindi-English voice input implemented
+- **Financial Crisis Support**:  Debt counseling and resources added
 - **Analytics Dashboard**: Track usage patterns and crisis types
 - **Push Notifications**: Browser notifications for safety alerts
 - **Account System**: User profiles and crisis history
