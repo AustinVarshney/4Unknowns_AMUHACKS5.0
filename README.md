@@ -54,11 +54,25 @@ Visit `http://localhost:5173`
 -  **Guided Tutorials**: Dynamic step-by-step instructions from AI assessment
 -  **Financial Support**: Debt counseling and resource links
 -  **Breathing Exercises**: 3 scientifically-backed calming patterns
+
+![Alt Text](./src/assets/breatheExercise.jpeg)
+
 -  **Emergency Contacts**: Persistent contact management
+
+![Alt Text](./src/assets/EmergencyContact.jpeg)
+
 -  **Safety Checklist**: Track home, digital, and go-bag preparedness
+
+![Alt Text](./src/assets/safetyChecklist.jpeg)
+
 -  **First Aid Tips**: Quick accordion reference for common emergencies
+
+![Alt Text](./src/assets/firstAid.jpeg)
+
 -  **Progressive Animations**: Smooth, staggered UI reveals
 -  **Fully Responsive**: Mobile-first design with touch optimization
+
+![Alt Text](./src/assets/features.jpeg)
 
 ## Key Features
 
@@ -70,6 +84,8 @@ Visit `http://localhost:5173`
 - **Panic-Level Tracking**: Real-time monitoring of stress levels (Calm → Stressed → Panic)
 - **Dynamic Severity Detection**: Automatic panic level updates based on medical assessment severity (Critical/High/Moderate/Low)
 - **Structured Assessment Display**: Color-coded sections for assessment, actions, warnings, escalation, and reassurance
+
+![Alt Text](./src/assets/crisisPage.jpeg)
 
 ### Multimodal Communication
 - **Voice Input**: Hands-free interaction using Web Speech API
@@ -94,6 +110,8 @@ Visit `http://localhost:5173`
 - **Emergency Contacts Manager**: Save and manage trusted contacts with persistent storage
 - **Safety Checklist**: Track preparedness across Home Safety, Digital Prep, and Go-Bag items
 - **First Aid Quick Reference**: Accordion-style tips for common emergencies (cuts, burns, choking, CPR, etc.)
+
+![Alt Text](./src/assets/wellness&preparedness.jpeg)
 
 ### Medical Assessment Features
 - **Real-time Backend Integration**: FastAPI backend for medical crisis evaluation
@@ -456,6 +474,7 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 ### Progressive Animations
 - **Crisis Cards**: Staggered entrance with scale animations and hover effects
 - **Chat Messages**: Fade-in with typing cursor for streaming text
+![Alt Text](./src/assets/chat.jpeg)
 - **Medical Assessment**: Sequential section reveals (0.3s intervals)
   - Crisis badges → Assessment → Actions → Warnings → Escalation → Reassurance → Resources
 - **Action Steps**: Individual item animations (0.15s stagger)
