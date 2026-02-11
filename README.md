@@ -4,6 +4,8 @@
 
 CalmPath is a modern, mobile-first crisis management application designed to help people manage emergencies with clear guidance and emotional support. Built with React, TypeScript, and powered by an intuitive AI-like conversational interface, CalmPath provides step-by-step instructions, calming techniques, and emergency escalation support during high-stress situations.
 
+![Alt Text](./src/assets/home.jpeg)
+
 ## Quick Start
 
 ```bash
