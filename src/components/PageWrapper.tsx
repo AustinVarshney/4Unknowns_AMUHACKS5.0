@@ -113,13 +113,36 @@ const OFFLINE_QUESTION_SECTIONS = [
   },
 ];
 
-const OFFLINE_GROUNDING_TIPS = [
-  "Inhale 4 seconds, hold 4, exhale 6. Repeat twice.",
-  "Name 3 things you can see, 2 you can touch, 1 you can hear.",
-  "Press feet into the floor for 5 seconds, then relax.",
-  "Sip water slowly. Count 5 sips if you can.",
-  "Soften your shoulders. Unclench your jaw. Breathe once, slowly.",
-];
+const OFFLINE_GROUNDING_TIPS: Record<string, string[]> = {
+  Medical: [
+    "Inhale 4 seconds, hold 4, exhale 6. Repeat twice.",
+    "Sit or lie down if safe. Place a hand on your chest and breathe slowly.",
+    "Name 3 things you can see, 2 you can touch, 1 you can hear.",
+    "Check: airway, breathing, circulation. Then take one slow breath.",
+    "Sip water if safe. Count 5 sips and pause.",
+  ],
+  Financial: [
+    "Write one urgent bill or amount on a note. Just one.",
+    "Press feet into the floor for 5 seconds, then relax.",
+    "Pick one 10-minute action: call, message, or checklist.",
+    "Take 3 slow breaths. Say: I can handle one step at a time.",
+    "Open a notes app and list 2 possible supports.",
+  ],
+  Family: [
+    "Unclench your jaw. Drop your shoulders. Breathe once, slowly.",
+    "Name 3 safe places you could step into for 2 minutes.",
+    "Count 5 slow breaths before speaking or texting.",
+    "Notice your feet. Wiggle toes. Ground for 5 seconds.",
+    "Put a hand on your chest. Say: I can ask for calm.",
+  ],
+  Personal: [
+    "Inhale 4 seconds, hold 4, exhale 6. Repeat twice.",
+    "Name 3 things you can see, 2 you can touch, 1 you can hear.",
+    "Hold something cool or textured. Describe it to yourself.",
+    "Sip water slowly. Count 5 sips if you can.",
+    "Soften your shoulders. Unclench your jaw. Breathe once, slowly.",
+  ],
+};
 
 const PageWrapper = ({ children, className = "" }: PageWrapperProps) => {
   const [isOffline, setIsOffline] = useState(() =>
@@ -169,8 +192,9 @@ const PageWrapper = ({ children, className = "" }: PageWrapperProps) => {
   const selectedAnswer = questionKey ? answers[questionKey] : undefined;
 
   const groundingTip = useMemo(() => {
-    if (!activeSection) return OFFLINE_GROUNDING_TIPS[0];
-    return OFFLINE_GROUNDING_TIPS[currentQuestionIndex % OFFLINE_GROUNDING_TIPS.length];
+    if (!activeSection) return OFFLINE_GROUNDING_TIPS.Personal[0];
+    const tips = OFFLINE_GROUNDING_TIPS[activeSection.label] ?? OFFLINE_GROUNDING_TIPS.Personal;
+    return tips[currentQuestionIndex % tips.length];
   }, [activeSection, currentQuestionIndex]);
 
   const offlineSummary = useMemo(() => {
