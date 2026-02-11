@@ -70,21 +70,21 @@ const FirstAidTips = () => {
   const navigate = useNavigate();
 
   return (
-    <PageWrapper className="flex flex-col px-6 py-8">
+    <PageWrapper className="flex flex-col px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
       <button
         onClick={() => navigate("/")}
-        className="mb-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground lg:mb-8"
       >
         <ArrowLeft className="h-4 w-4" /> Home
       </button>
 
-      <div className="mx-auto w-full max-w-lg">
-        <h1 className="mb-2 text-center text-3xl font-bold text-foreground">First Aid Quick Reference</h1>
-        <p className="mb-8 text-center text-muted-foreground">
+      <div className="mx-auto w-full max-w-4xl">
+        <h1 className="mb-2 text-center text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">First Aid Quick Reference</h1>
+        <p className="mb-8 text-center text-sm text-muted-foreground sm:text-base lg:mb-12 lg:text-lg">
           Tap a topic for step-by-step guidance.
         </p>
 
-        <Accordion type="single" collapsible className="flex flex-col gap-3">
+        <Accordion type="single" collapsible className="grid gap-3 sm:grid-cols-1 lg:grid-cols-2 lg:gap-4">
           {tips.map((tip, i) => (
             <motion.div
               key={tip.title}
@@ -94,16 +94,16 @@ const FirstAidTips = () => {
             >
               <AccordionItem
                 value={tip.title}
-                className="rounded-xl border border-border bg-card px-5 data-[state=open]:border-primary/40"
+                className="rounded-xl border border-border bg-card px-4 shadow-sm transition-all hover:shadow-md data-[state=open]:border-primary/40 sm:px-5 lg:px-6"
               >
-                <AccordionTrigger className="text-base font-semibold text-card-foreground hover:no-underline">
+                <AccordionTrigger className="text-base font-semibold text-card-foreground hover:no-underline sm:text-lg">
                   {tip.title}
                 </AccordionTrigger>
                 <AccordionContent>
-                  <ol className="flex flex-col gap-2 pb-2">
+                  <ol className="flex flex-col gap-2 pb-2 lg:gap-3">
                     {tip.steps.map((s, j) => (
-                      <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      <li key={j} className="flex items-start gap-2.5 text-sm text-muted-foreground sm:gap-3 sm:text-base">
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary sm:h-6 sm:w-6 sm:text-sm">
                           {j + 1}
                         </span>
                         {s}
