@@ -115,32 +115,32 @@ const OFFLINE_QUESTION_SECTIONS = [
 
 const OFFLINE_GROUNDING_TIPS: Record<string, string[]> = {
   Medical: [
-    "Inhale 4 seconds, hold 4, exhale 6. Repeat twice.",
-    "Sit or lie down if safe. Place a hand on your chest and breathe slowly.",
-    "Name 3 things you can see, 2 you can touch, 1 you can hear.",
-    "Check: airway, breathing, circulation. Then take one slow breath.",
-    "Sip water if safe. Count 5 sips and pause.",
+    "Stay calm. Check: Is the person breathing? Are they responsive?",
+    "If bleeding: Apply firm pressure with clean cloth. Don't remove it.",
+    "Keep the person still and comfortable. Don't give food or water.",
+    "Note the time symptoms started and what happened.",
+    "If alone, sit or lie down safely. Call emergency services when connected.",
   ],
   Financial: [
-    "Write one urgent bill or amount on a note. Just one.",
-    "Press feet into the floor for 5 seconds, then relax.",
-    "Pick one 10-minute action: call, message, or checklist.",
-    "Take 3 slow breaths. Say: I can handle one step at a time.",
-    "Open a notes app and list 2 possible supports.",
+    "Write down the exact amount needed and the deadline.",
+    "List 2-3 people or organizations who might help (family, employer, charity).",
+    "Pause. You can't solve it all at once. Pick one smallest step.",
+    "Take 3 deep breaths. Anxiety won't help - action will.",
+    "Create a priority list: What must be paid first? What can wait 24 hours?",
   ],
   Family: [
-    "Unclench your jaw. Drop your shoulders. Breathe once, slowly.",
-    "Name 3 safe places you could step into for 2 minutes.",
-    "Count 5 slow breaths before speaking or texting.",
-    "Notice your feet. Wiggle toes. Ground for 5 seconds.",
-    "Put a hand on your chest. Say: I can ask for calm.",
+    "Physical distance helps. Step into another room or outside for 2 minutes.",
+    "Before responding: Count to 10 slowly. Breathe between each number.",
+    "Ask yourself: What do I need right now? Space? To be heard? Safety?",
+    "Lower your voice intentionally. Soft tone can de-escalate tension.",
+    "Write down your boundary clearly before communicating it.",
   ],
   Personal: [
-    "Inhale 4 seconds, hold 4, exhale 6. Repeat twice.",
-    "Name 3 things you can see, 2 you can touch, 1 you can hear.",
-    "Hold something cool or textured. Describe it to yourself.",
-    "Sip water slowly. Count 5 sips if you can.",
-    "Soften your shoulders. Unclench your jaw. Breathe once, slowly.",
+    "You're safe right now. Take 3 slow breaths: In for 4, out for 6.",
+    "5-4-3-2-1 grounding: Name 5 things you see, 4 you touch, 3 you hear, 2 you smell, 1 you taste.",
+    "Splash cold water on your face or hold an ice cube for 30 seconds.",
+    "Text or call someone you trust, even if just to say 'I need support.'",
+    "Allow yourself 5 minutes to feel whatever you're feeling, then choose one small action.",
   ],
 };
 
@@ -247,7 +247,8 @@ const PageWrapper = ({ children, className = "" }: PageWrapperProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden px-4 py-6"
+          className="fixed inset-0 z-[9999] flex min-h-screen w-screen items-center justify-center overflow-y-auto overflow-x-hidden bg-background px-4 py-6"
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
           aria-live="polite"
           aria-label="Offline crisis helper"
         >
