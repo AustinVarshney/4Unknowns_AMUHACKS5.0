@@ -118,6 +118,12 @@ Visit `http://localhost:5173`
 - **Escalation Alerts**: Automatic detection when emergency services are needed
 - **Reassurance Messages**: Calming emotional support throughout the crisis
 - **Debug Mode**: Raw JSON toggle for testing and development
+![Alt Text](./src/assets/Chat1.jpeg)
+![Alt Text](./src/assets/chat2.jpeg)
+![Alt Text](./src/assets/chat3.jpeg)
+![Alt Text](./src/assets/chat4.jpeg)
+![Alt Text](./src/assets/chat5.jpeg)
+
 
 ### Emergency Features
 - **One-Tap Emergency Escalation**: Quick access when situations worsen
