@@ -145,6 +145,7 @@ const PageWrapper = ({ children, className = "" }: PageWrapperProps) => {
     };
   }, [isOffline]);
 
+
   const activeSection = useMemo(
     () => OFFLINE_QUESTION_SECTIONS.find((section) => section.label === selectedCategory) ?? null,
     [selectedCategory]
