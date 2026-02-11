@@ -12,6 +12,7 @@ import {
     Wind,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import LiveLocationMap from "../components/LiveLocationMap";
 import PageWrapper from "../components/PageWrapper";
 
 const features = [
@@ -54,6 +55,7 @@ const Index = () => {
 
   return (
     <PageWrapper className="relative flex flex-col overflow-hidden">
+      <LiveLocationMap />
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--calm)/0.45),_transparent_70%)] blur-2xl" />
         <div className="absolute right-0 top-20 h-96 w-96 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.35),_transparent_65%)] blur-3xl" />
