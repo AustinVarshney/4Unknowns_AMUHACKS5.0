@@ -14,10 +14,10 @@ const ChatBubble = ({ message, isUser, index = 0 }: ChatBubbleProps) => (
     className={`flex ${isUser ? "justify-end" : "justify-start"}`}
   >
     <div
-      className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed md:text-base ${
+      className={`max-w-[85%] sm:max-w-[75%] lg:max-w-[65%] rounded-2xl px-4 py-3 sm:px-5 sm:py-3.5 text-sm leading-relaxed md:text-base shadow-md hover:shadow-lg transition-shadow ${
         isUser
-          ? "bg-primary text-primary-foreground rounded-br-md"
-          : "bg-secondary text-secondary-foreground rounded-bl-md"
+          ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-br-md"
+          : "bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground rounded-bl-md"
       }`}
     >
       {message}
