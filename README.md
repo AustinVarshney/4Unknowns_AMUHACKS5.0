@@ -4,7 +4,7 @@
 
 CalmPath is a modern, mobile-first crisis management application designed to help people manage emergencies with clear guidance and emotional support. Built with React, TypeScript, and powered by an intuitive AI-like conversational interface, CalmPath provides step-by-step instructions, calming techniques, and emergency escalation support during high-stress situations.
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Clone and install
@@ -21,14 +21,13 @@ npm run dev
 
 Visit `http://localhost:5173`
 
-## 📚 Table of Contents
+## Table of Contents
 
 - [Feature Highlights](#-feature-highlights)
 - [Key Features](#key-features)
 - [Application Pages](#application-pages)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [Available Scripts](#available-scripts)
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
 - [Application Flow](#application-flow)
@@ -42,28 +41,27 @@ Visit `http://localhost:5173`
 - [Future Enhancements](#future-enhancements)
 - [Technology Stack Summary](#-technology-stack-summary)
 - [Useful Links](#-useful-links)
-- [License](#-license)
 
-## ✨ Feature Highlights
+## Feature Highlights
 
-- ✅ **5 Crisis Types**: Medical, Fire, Safety, Financial, Other
-- ✅ **AI Medical Assessment**: Real-time backend integration with structured output
-- ✅ **Voice Input**: Hindi & English speech recognition with auto-translation
-- ✅ **Streaming Responses**: Natural typing effects for conversational feel
-- ✅ **Dynamic Panic Levels**: Auto-updates based on severity (Critical → Panic)
-- ✅ **Guided Tutorials**: Dynamic step-by-step instructions from AI assessment
-- ✅ **Financial Support**: Debt counseling and resource links
-- ✅ **Breathing Exercises**: 3 scientifically-backed calming patterns
-- ✅ **Emergency Contacts**: Persistent contact management
-- ✅ **Safety Checklist**: Track home, digital, and go-bag preparedness
-- ✅ **First Aid Tips**: Quick accordion reference for common emergencies
-- ✅ **Progressive Animations**: Smooth, staggered UI reveals
-- ✅ **Fully Responsive**: Mobile-first design with touch optimization
+-  **5 Crisis Types**: Medical, Fire, Safety, Financial, Other
+-  **AI Medical Assessment**: Real-time backend integration with structured output
+-  **Voice Input**: Hindi & English speech recognition with auto-translation
+-  **Streaming Responses**: Natural typing effects for conversational feel
+-  **Dynamic Panic Levels**: Auto-updates based on severity (Critical → Panic)
+-  **Guided Tutorials**: Dynamic step-by-step instructions from AI assessment
+-  **Financial Support**: Debt counseling and resource links
+-  **Breathing Exercises**: 3 scientifically-backed calming patterns
+-  **Emergency Contacts**: Persistent contact management
+-  **Safety Checklist**: Track home, digital, and go-bag preparedness
+-  **First Aid Tips**: Quick accordion reference for common emergencies
+-  **Progressive Animations**: Smooth, staggered UI reveals
+-  **Fully Responsive**: Mobile-first design with touch optimization
 
 ## Key Features
 
 ### Crisis Guidance System
-- **Multi-Crisis Support**: Handle Medical, Fire, Personal Safety, Financial, and Other emergencies
+- **Multi-Crisis Support**: Handle Medical, Fire, Financial, and Other emergencies
 - **AI-Powered Medical Assessment**: Real-time backend integration for medical crisis evaluation
 - **Financial Crisis Support**: Debt counseling, resource links, and financial guidance
 - **Intelligent Chat Interface**: Natural conversational flow with streaming text effects
@@ -76,7 +74,6 @@ Visit `http://localhost:5173`
 - **Multi-Language Support**: Hindi and English speech recognition
 - **Real-time Translation**: Hindi-to-English translation using MyMemory API
 - **Text-to-Speech**: Audio playback of tutorial instructions for accessibility
-- **Streaming Text Effects**: Word-by-word typing animation for natural conversation flow
 
 ### Interactive Tutorials
 - **Step-by-Step Instructions**: Clear, timed guidance for each crisis type
@@ -98,13 +95,11 @@ Visit `http://localhost:5173`
 
 ### Medical Assessment Features
 - **Real-time Backend Integration**: FastAPI backend for medical crisis evaluation
-- **Structured Assessment Display**: Organized sections with progressive animations
 - **Severity Classification**: Critical, High, Moderate, Low severity indicators
 - **Immediate Action Steps**: Numbered, ordered steps with critical flags
 - **Safety Warnings**: "Do NOT Do" warnings to prevent dangerous actions
 - **Escalation Alerts**: Automatic detection when emergency services are needed
 - **Reassurance Messages**: Calming emotional support throughout the crisis
-- **Financial Resources**: Support links for financial crisis assistance
 - **Debug Mode**: Raw JSON toggle for testing and development
 
 ### Emergency Features
@@ -212,18 +207,6 @@ Over 48 accessible, customizable components including:
    ```
    The app will open at `http://localhost:5173`
 
-## Available Scripts
-
-```bash
-npm run dev          # Start development server with hot reload
-npm run build        # Production build
-npm run build:dev    # Development build with source maps
-npm run preview      # Preview production build locally
-npm run lint         # Run ESLint for code quality
-npm run test         # Run unit tests with Vitest
-npm run test:watch   # Run tests in watch mode
-```
-
 ## Project Structure
 
 ```
@@ -313,19 +296,6 @@ Tutorial Guide (/tutorial/:type) ← Predefined steps
 - `/contacts` - Emergency contact management
 - `/first-aid` - Quick first aid reference
 
-## Browser Compatibility
-
-### Recommended Browsers
-- **Chrome/Edge** 90+ (Best support for Speech API)
-- **Safari** 14+ (Limited Hindi speech recognition)
-- **Firefox** 88+ (Text features fully supported)
-
-### Required Browser Features
-- **Speech Recognition API** - For voice input (Chrome/Edge recommended)
-- **Geolocation API** - For location sharing
-- **LocalStorage** - For data persistence
-- **Modern CSS** - Grid, Flexbox, Custom Properties
-
 ## Configuration
 
 ### Environment Variables
@@ -409,19 +379,6 @@ Response: { "status": "healthy", "version": "1.0.0" }
 3. **Response Format**
    Ensure your backend returns JSON matching the `AssessmentResponse` interface
 
-### Vite Configuration
-The project uses standard Vite configuration optimized for React:
-- React SWC plugin for fast refresh
-- Path aliases configured for clean imports
-- Production optimizations enabled
-
-### Tailwind Configuration
-Custom theme extensions:
-- Container queries
-- Typography plugin
-- Custom animations (accordion-down, accordion-up)
-- Extended color palette for crisis types
-
 ## Building for Production
 
 ### Standard Build
@@ -492,34 +449,6 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 - **Install Command**: `npm install`
 - **Node Version**: 18.x
 
-## Performance & Technical Details
-
-### Bundle Size Optimization
-- **Code Splitting**: React Router lazy loading for pages
-- **Tree Shaking**: Unused code eliminated during build
-- **Asset Optimization**: Images and icons optimized
-- **Minification**: JavaScript and CSS compressed
-- **Gzip Compression**: Enabled on Vercel deployment
-
-### Animation Performance
-- **Framer Motion**: GPU-accelerated animations
-- **Progressive Reveals**: Staggered delays prevent layout shifts
-- **Will-change**: CSS hints for smooth transforms
-- **RequestAnimationFrame**: Smooth 60fps animations
-
-### State Management
-- **React Hooks**: useState, useEffect, useRef for local state
-- **Navigation State**: Pass data between pages via router state
-- **LocalStorage**: Persistent data for contacts and checklist
-- **Session State**: Medical assessment data in chat flow
-
-### Accessibility
-- **ARIA Labels**: Screen reader support
-- **Keyboard Navigation**: Full keyboard accessibility
-- **Focus Management**: Proper focus indicators
-- **Color Contrast**: WCAG AA compliant
-- **Voice Alternatives**: Audio playback for critical instructions
-
 ## UI/UX Features
 
 ### Progressive Animations
@@ -549,42 +478,10 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 - Collapsible quick preset menu on mobile
 - Adaptive grid layouts for crisis cards
 
-## Troubleshooting
-
-### Common Issues
-
-**Voice input not working**
-- Ensure you're using Chrome or Edge browser
-- Check microphone permissions in browser settings
-- HTTPS required for production (localhost works for development)
-
-**Backend connection errors**
-- Verify `VITE_MEDICAL_API_URL` in `.env` file
-- Ensure backend server is running (default: `http://localhost:8000`)
-- Check CORS configuration on backend
-- Open browser console to see detailed error messages
-
-**Translation not working**
-- MyMemory API has rate limits (free tier)
-- Check network connection
-- Falls back to original text if translation fails
-
-**Styling issues after build**
-- Clear browser cache
-- Rebuild with `npm run build`
-- Check for Tailwind CSS purge configuration
-
-**LocalStorage data loss**
-- Browser private/incognito mode clears data on close
-- Check browser storage settings
-- Export emergency contacts before clearing cache
-
 ## Future Enhancements
 
-- **~~Multi-language Support~~**: ✅ Hindi-English voice input implemented
-- **~~Financial Crisis Support~~**: ✅ Debt counseling and resources added
-- **~~Streaming Responses~~**: ✅ Word-by-word typing effects implemented
-- **~~Dynamic Panic Levels~~**: ✅ Severity-based panic indicator updates
+- **Multi-language Support**:  Hindi-English voice input implemented
+- **Financial Crisis Support**:  Debt counseling and resources added
 - **Analytics Dashboard**: Track usage patterns and crisis types
 - **Push Notifications**: Browser notifications for safety alerts
 - **Account System**: User profiles and crisis history
@@ -595,7 +492,7 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 - **Offline Mode**: Progressive Web App with service workers
 - **Video Call Support**: Direct video consultation with professionals
 
-## 🛠️ Technology Stack Summary
+## Technology Stack Summary
 
 | Category | Technologies |
 |----------|-------------|
@@ -613,110 +510,13 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 | **Deployment** | Vercel |
 | **Testing** | Vitest 3.2, Testing Library |
 
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Commit your changes**
-   ```bash
-   git commit -m 'Add amazing feature'
-   ```
-4. **Push to the branch**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-5. **Open a Pull Request**
-
-### Code Style Guidelines
-- Use TypeScript for all new files
-- Follow existing component structure
-- Add proper type definitions
-- Test on Chrome and mobile devices
-- Ensure accessibility compliance
-
-### Development Workflow
-- Run `npm run lint` before committing
-- Test voice input and translations
-- Verify responsive design on multiple screen sizes
-- Check backend integration if modifying API calls
-
-## 🧪 Testing
-
-### Run Tests
-```bash
-# Run all tests
-npm run test
-
-# Watch mode for development
-npm run test:watch
-```
-
-### Manual Testing Checklist
-
-**Crisis Selection**
-- [ ] All 5 crisis cards display correctly
-- [ ] Hover animations work smoothly
-- [ ] Cards link to correct chat pages
-
-**Medical Crisis Flow**
-- [ ] Voice input captures Hindi speech
-- [ ] Translation works for Hindi → English
-- [ ] Backend API call succeeds
-- [ ] Assessment displays with all sections
-- [ ] Panic level updates based on severity
-- [ ] Streaming animation shows word-by-word
-- [ ] "Start Guided Tutorial" button navigates correctly
-
-**Financial Crisis Flow**
-- [ ] Quick presets appear (debt, job loss, bills)
-- [ ] Financial resources display with links
-- [ ] Assessment structure matches medical format
-
-**Other Crisis Types**
-- [ ] Predefined conversation flows work
-- [ ] Panic level gradually decreases
-- [ ] Navigation to tutorial works
-
-**Voice & Translation**
-- [ ] Microphone permission requested
-- [ ] Hindi voice recognition works (Chrome/Edge)
-- [ ] Auto-translation to English
-- [ ] Graceful fallback on errors
-
-**Responsive Design**
-- [ ] Mobile: Crisis cards stack vertically
-- [ ] Tablet: 2-column grid
-- [ ] Desktop: 3-5 column grid
-- [ ] Quick presets collapse on mobile
-- [ ] Touch interactions work smoothly
-
-## 🔗 Useful Links
+## Useful Links
 
 - **Frontend Repository**: [https://github.com/rupeshv2121/CalmPath_Frontend](https://github.com/rupeshv2121/CalmPath_Frontend)
 - **Backend Repository**: [https://github.com/your-org/CalmPath_Backend](https://github.com/your-org/CalmPath_Backend) *(update link)*
 - **Live Demo**: [https://calm-path-frontend.vercel.app](https://calm-path-frontend.vercel.app) *(if deployed)*
 - **Issues & Bugs**: [Report here](https://github.com/rupeshv2121/CalmPath_Frontend/issues)
 - **Feature Requests**: [Suggest features](https://github.com/rupeshv2121/CalmPath_Frontend/issues/new)
-
-## 📸 Screenshots
-
-> *Add screenshots of key features here:*
-> - Crisis Selection page
-> - Medical chat with assessment
-> - Tutorial page with steps
-> - Breathing exercise
-> - Emergency contacts
-
-## 📄 License
-
-This project is part of AMUHacks5 hackathon submission.
-
-**Team 4Unknowns** - All rights reserved.
 
 ---
 
