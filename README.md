@@ -216,8 +216,6 @@ Emergency Escalation (/emergency) ← Direct emergency contacts
 Create a `.env` file in the root directory if you need to customize:
 
 ```env
-# No required environment variables for basic functionality
-# Optional: Add backend API URL if implementing server-side features
 VITE_API_URL=https://your-backend-api.com
 ```
 
@@ -280,5 +278,6 @@ Serves the production build locally at `http://localhost:5173`
 
 <div align="center">
 **Made with ❤️ by Team 4Unknowns**
+
 *CalmPath - Because clarity matters when every second counts*
 </div>
