@@ -15,35 +15,49 @@ const CrisisSelection = () => {
   const navigate = useNavigate();
 
   return (
-    <PageWrapper className="flex flex-col px-6 py-8">
+    <PageWrapper className="flex min-h-screen flex-col px-4 py-6 sm:px-6 sm:py-8 lg:h-screen lg:overflow-hidden lg:px-12 lg:py-8">
       <button
         onClick={() => navigate("/")}
-        className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-all hover:text-foreground lg:mb-8"
       >
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
 
-      <motion.h1
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mb-2 text-center text-2xl font-bold text-foreground md:text-3xl"
-      >
-        What kind of situation are you facing?
-      </motion.h1>
-      <p className="mb-10 text-center text-muted-foreground">
-        Select the type of emergency for guided help.
-      </p>
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8 text-center lg:mb-12"
+        >
+          <h1 className="mb-3 text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
+            What kind of situation are you facing?
+          </h1>
+          <p className="text-sm text-muted-foreground sm:text-base lg:text-lg">
+            Select the type of emergency for guided help.
+          </p>
+        </motion.div>
 
-      <div className="mx-auto grid w-full max-w-lg gap-4 sm:grid-cols-2">
-        {crises.map((c, i) => (
-          <CrisisCard
-            key={c.type}
-            emoji={c.emoji}
-            title={c.title}
-            index={i}
-            onClick={() => navigate(`/chat/${c.type}`)}
-          />
-        ))}
+        <div className="grid grid-cols-2 w-full max-w-5xl gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          {crises.map((c, i) => (
+            <CrisisCard
+              key={c.type}
+              emoji={c.emoji}
+              title={c.title}
+              index={i}
+              onClick={() => navigate(`/chat/${c.type}`)}
+            />
+          ))}
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="mt-8 text-center text-xs text-muted-foreground sm:text-sm lg:mt-12 lg:text-base"
+        >
+          💡 Not sure which to choose? Select "Other Crisis" for general guidance.
+        </motion.p>
       </div>
     </PageWrapper>
   );
