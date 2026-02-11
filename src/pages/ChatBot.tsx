@@ -105,7 +105,7 @@ const ChatBot = () => {
   const streamingTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   const flow = assistantFlows[crisisType] || assistantFlows.other;
-  const apiBaseUrl = import.meta.env.VITE_MEDICAL_API_URL || "http://localhost:8000";
+  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
   const isMedicalFlow = crisisType === "medical";
   const isFinancialFlow = crisisType === "financial";
 
