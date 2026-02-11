@@ -190,6 +190,54 @@ const ChatBot = () => {
 
   // Removed formatAssessment - now using MedicalAssessmentBubble component
 
+  // Quick presets based on crisis type
+  const quickPresetsMap: Record<string, string[]> = {
+    medical: [
+      "Someone unconscious",
+      "Heavy bleeding",
+      "Chest pain",
+      "Difficulty breathing",
+      "Severe burn",
+      "Broken bone",
+      "Choking",
+      "Heart attack symptoms",
+    ],
+    fire: [
+      "Fire in kitchen",
+      "Smoke in building",
+      "Electrical fire",
+      "Can't evacuate safely",
+      "Person trapped inside",
+      "Fire spreading quickly",
+      "Smoke inhalation",
+      "Exit blocked",
+    ],
+    safety: [
+      "Feeling threatened",
+      "Domestic violence",
+      "Being followed",
+      "Unsafe location",
+      "Need safe shelter",
+      "Stalking incident",
+    ],
+    financial: [
+      "Need financial help",
+      "Debt problems",
+      "Lost my job",
+      "Can't pay bills",
+      "Emergency funds needed",
+      "Loan assistance",
+    ],
+    other: [
+      "Multiple emergencies",
+      "Confused situation",
+      "Natural disaster",
+      "Chemical spill",
+      "Gas leak",
+      "Severe weather",
+    ],
+  };
+
   const sendMessage = async (messageText?: string) => {
     const trimmed = (messageText ?? input).trim();
     if (!trimmed) return;
@@ -250,23 +298,8 @@ const ChatBot = () => {
     if (panicLevel === "stressed" && messages.length > 3) setPanicLevel("calm");
   };
 
-
-  const quickPresets = isMedicalFlow ? [
-    "Someone unconscious",
-    "Fire nearby",
-    "Heavy bleeding",
-    "Chest pain",
-    "Difficulty breathing",
-    "Severe burn",
-    "Broken bone",
-  ] : isFinancialFlow ? [
-    "Need financial help",
-    "Debt problems",
-    "Lost my job",
-    "Can't pay bills",
-    "Emergency funds needed",
-    "Loan assistance",
-  ] : [];
+  // Get quick presets for current crisis type
+  const quickPresets = quickPresetsMap[crisisType] || [];
 
   const toggleVoice = () => {
     if (!recognitionRef.current) {
