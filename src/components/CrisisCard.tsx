@@ -11,28 +11,50 @@ interface CrisisCardProps {
 
 const CrisisCard = ({ emoji, title, description, accent, onClick, index = 0 }: CrisisCardProps) => (
   <motion.button
-    initial={{ opacity: 0, y: 16 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.35, delay: index * 0.1 }}
-    whileHover={{ scale: 1.04 }}
-    whileTap={{ scale: 0.97 }}
+    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ 
+      duration: 0.4, 
+      delay: index * 0.08,
+      ease: [0.22, 0.61, 0.36, 1]
+    }}
+    whileHover={{ 
+      scale: 1.03,
+      y: -4,
+      transition: { duration: 0.2 }
+    }}
+    whileTap={{ scale: 0.98 }}
     onClick={onClick}
-    className="group relative flex w-full flex-col items-start gap-4 overflow-hidden rounded-3xl border border-border/70 bg-card/80 p-6 text-left text-card-foreground shadow-sm transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl md:p-7 max-[380px]:p-4"
+    className="group relative flex h-full w-full flex-col items-start gap-3 overflow-hidden rounded-2xl border-2 border-border/50 bg-gradient-to-br from-card via-card to-card/80 p-5 text-left text-card-foreground shadow-lg transition-all hover:border-primary/60 hover:shadow-2xl md:gap-4 md:p-6 max-[380px]:p-4 max-[380px]:gap-2.5"
   >
-    <div className={`absolute inset-0 bg-gradient-to-br ${accent} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
-    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/60 to-transparent" />
-    <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-background/80 text-4xl shadow-sm ring-1 ring-border/70 max-[380px]:h-12 max-[380px]:w-12 max-[380px]:text-3xl">
+    {/* Accent gradient overlay */}
+    <div className={`absolute inset-0 bg-gradient-to-br ${accent} opacity-0 transition-all duration-500 group-hover:opacity-100`} />
+    
+    {/* Subtle shine effect */}
+    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+    
+    {/* Bottom fade */}
+    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-background/40 to-transparent" />
+    
+    {/* Emoji container with better styling */}
+    <div className="relative flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-background via-background/90 to-background/70 text-4xl shadow-md ring-2 ring-border/60 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg max-[380px]:h-14 max-[380px]:w-14 max-[380px]:text-3xl md:h-16 md:w-16">
       {emoji}
     </div>
-    <div className="relative space-y-2">
-      <p className="text-lg font-semibold text-foreground sm:text-xl max-[380px]:text-base">{title}</p>
-      <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground max-[380px]:text-[11px] max-[380px]:tracking-[0.12em]">
+    
+    {/* Content */}
+    <div className="relative flex-1 space-y-1.5">
+      <h3 className="text-base font-bold text-foreground transition-colors group-hover:text-foreground sm:text-lg md:text-xl max-[380px]:text-sm">
+        {title}
+      </h3>
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/80 transition-colors group-hover:text-muted-foreground sm:text-xs max-[380px]:text-[9px] max-[380px]:tracking-wide">
         {description}
       </p>
     </div>
-    <div className="relative mt-auto inline-flex items-center gap-2 text-xs font-semibold text-primary max-[380px]:text-[11px]">
-      Start guidance
-      <span className="text-base">→</span>
+    
+    {/* Call to action */}
+    <div className="relative mt-1 inline-flex items-center gap-1.5 text-xs font-bold text-primary transition-all group-hover:gap-2.5 group-hover:text-primary max-[380px]:text-[10px] sm:text-sm">
+      <span>Start guidance</span>
+      <span className="text-base transition-transform group-hover:translate-x-1 max-[380px]:text-sm">→</span>
     </div>
   </motion.button>
 );

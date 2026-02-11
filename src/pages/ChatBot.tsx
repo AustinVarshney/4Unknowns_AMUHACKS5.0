@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { ArrowLeft, ChevronDown, ChevronUp, Mic, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,10 +11,13 @@ interface Message {
   text?: string;
   isUser: boolean;
   medicalData?: AssessmentResponse;
+  isStreaming?: boolean;
 }
 
 interface AssessmentResponse {
   assessment?: string;
+  severity_level?: string;
+  crisis_type?: string;
   immediate_actions?: Array<{
     step_id?: number | string;
     title?: string;
@@ -39,7 +43,6 @@ interface AssessmentResponse {
 const crisisLabels: Record<string, string> = {
   medical: "Medical Emergency",
   fire: "Fire Emergency",
-  safety: "Personal Safety",
   financial: "Financial Crisis",
   other: "Other Crisis",
 };
@@ -95,13 +98,38 @@ const ChatBot = () => {
   const [showAllPresets, setShowAllPresets] = useState(false);
   const [showRawJson, setShowRawJson] = useState(false);
   const [lastRawJson, setLastRawJson] = useState("");
+  const [streamingText, setStreamingText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const streamingTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   const flow = assistantFlows[crisisType] || assistantFlows.other;
   const apiBaseUrl = import.meta.env.VITE_MEDICAL_API_URL || "http://localhost:8000";
   const isMedicalFlow = crisisType === "medical";
   const isFinancialFlow = crisisType === "financial";
+
+  // Function to update panic level based on assessment data
+  const updatePanicLevel = (data: AssessmentResponse) => {
+    const severity = data.severity_level?.toLowerCase();
+    const escalationRequired = data.escalation_required ?? data.escalation?.required;
+    
+    // Map severity to panic level
+    if (severity === "critical" || escalationRequired) {
+      setPanicLevel("panic");
+    } else if (severity === "high") {
+      setPanicLevel("panic");
+    } else if (severity === "moderate") {
+      setPanicLevel("stressed");
+    } else if (severity === "low") {
+      setPanicLevel("calm");
+    } else {
+      // Default: gradually calm down if no severity specified
+      if (messages.length > 2) {
+        setPanicLevel("calm");
+      }
+    }
+  };
 
   // Translate text from Hindi to English
   const translateToEnglish = async (text: string): Promise<string> => {
@@ -171,22 +199,67 @@ const ChatBot = () => {
   }, []);
 
   useEffect(() => {
-    // Initial assistant message
+    // Initial assistant message with typing effect
     const timer = setTimeout(() => {
       const starter = isMedicalFlow || isFinancialFlow
         ? "Tell me what is happening, and I will guide you step by step."
         : flow[0];
-      setMessages([{ text: starter, isUser: false }]);
-      if (!isMedicalFlow && !isFinancialFlow) {
-        setFlowIndex(1);
-      }
+      typeMessage(starter, () => {
+        if (!isMedicalFlow && !isFinancialFlow) {
+          setFlowIndex(1);
+        }
+      });
     }, 500);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages]);
+  }, [messages, streamingText]);
+
+  // Typing/streaming effect function
+  const typeMessage = (text: string, callback: (msg: Message) => void) => {
+    setIsTyping(true);
+    setStreamingText("");
+    
+    // Add empty message that will be updated
+    const tempMsg: Message = { text: "", isUser: false, isStreaming: true };
+    setMessages((prev) => [...prev, tempMsg]);
+    
+    let currentIndex = 0;
+    const words = text.split(" ");
+    
+    const typeNextWord = () => {
+      if (currentIndex < words.length) {
+        const nextText = words.slice(0, currentIndex + 1).join(" ");
+        setStreamingText(nextText);
+        currentIndex++;
+        streamingTimeoutRef.current = setTimeout(typeNextWord, 50); // Speed: 50ms per word
+      } else {
+        // Typing complete
+        setIsTyping(false);
+        setStreamingText("");
+        // Replace streaming message with final message
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          newMessages[newMessages.length - 1] = { text, isUser: false };
+          return newMessages;
+        });
+        callback({ text, isUser: false });
+      }
+    };
+    
+    typeNextWord();
+  };
+
+  // Cleanup streaming on unmount
+  useEffect(() => {
+    return () => {
+      if (streamingTimeoutRef.current) {
+        clearTimeout(streamingTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Removed formatAssessment - now using MedicalAssessmentBubble component
 
@@ -216,8 +289,14 @@ const ChatBot = () => {
 
         const data: AssessmentResponse = await response.json();
         setLastRawJson(JSON.stringify(data, null, 2));
-        // Store structured data instead of formatted text
-        setMessages((prev) => [...prev, { isUser: false, medicalData: data }]);
+        
+        // Update panic level based on assessment severity
+        updatePanicLevel(data);
+        
+        // Add a brief delay then show medical data with animation
+        setTimeout(() => {
+          setMessages((prev) => [...prev, { isUser: false, medicalData: data }]);
+        }, 300);
       } catch (error) {
         console.error("Medical assessment error:", error);
         setLastRawJson(JSON.stringify({ error: String(error) }, null, 2));
@@ -232,22 +311,26 @@ const ChatBot = () => {
         setIsAwaitingResponse(false);
       }
     } else {
-      // Simulate response
+      // Simulate response with typing effect
       setTimeout(() => {
         if (flowIndex < flow.length) {
-          setMessages((prev) => [...prev, { text: flow[flowIndex], isUser: false }]);
-
-          // Last message → navigate to tutorial
-          if (flowIndex === flow.length - 1) {
-            setTimeout(() => navigate(`/tutorial/${crisisType}`), 2000);
-          }
+          typeMessage(flow[flowIndex], () => {
+            // Last message → navigate to tutorial
+            if (flowIndex === flow.length - 1) {
+              setTimeout(() => navigate(`/tutorial/${crisisType}`), 2000);
+            }
+          });
           setFlowIndex((i) => i + 1);
         }
       }, 800);
     }
 
-    // Simulate panic level changes
-    if (panicLevel === "stressed" && messages.length > 3) setPanicLevel("calm");
+    // For non-medical/financial flows, gradually calm down
+    if (!isMedicalFlow && !isFinancialFlow) {
+      if (panicLevel === "stressed" && messages.length > 3) {
+        setPanicLevel("calm");
+      }
+    }
   };
 
 
@@ -332,8 +415,41 @@ const ChatBot = () => {
             if (m.medicalData) {
               return <MedicalAssessmentBubble key={i} data={m.medicalData} index={i} showRawJson={showRawJson} />;
             }
-            return <ChatBubble key={i} message={m.text || ""} isUser={m.isUser} index={i} />;
+            // Show streaming text for the message being typed
+            const messageText = m.isStreaming ? streamingText : (m.text || "");
+            return <ChatBubble key={i} message={messageText} isUser={m.isUser} index={i} isStreaming={m.isStreaming} />;
           })}
+          {/* Thinking indicator when waiting for API response */}
+          {isAwaitingResponse && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-start"
+            >
+              <div className="max-w-[85%] sm:max-w-[75%] lg:max-w-[65%] rounded-2xl px-5 py-3.5 text-sm bg-gradient-to-br from-slate-50 via-white to-slate-100 border border-slate-200 rounded-bl-md shadow-md">
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+                      className="h-2 w-2 rounded-full bg-primary/60"
+                    />
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                      className="h-2 w-2 rounded-full bg-primary/60"
+                    />
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                      className="h-2 w-2 rounded-full bg-primary/60"
+                    />
+                  </div>
+                  <span className="text-xs text-muted-foreground">Analyzing...</span>
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
 
