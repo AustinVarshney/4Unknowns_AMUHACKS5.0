@@ -118,10 +118,15 @@ Visit `http://localhost:5173`
 - **Escalation Alerts**: Automatic detection when emergency services are needed
 - **Reassurance Messages**: Calming emotional support throughout the crisis
 - **Debug Mode**: Raw JSON toggle for testing and development
+
 ![Alt Text](./src/assets/Chat1.jpeg)
+
 ![Alt Text](./src/assets/chat2.jpeg)
+
 ![Alt Text](./src/assets/chat3.jpeg)
+
 ![Alt Text](./src/assets/chat4.jpeg)
+
 ![Alt Text](./src/assets/chat5.jpeg)
 
 
@@ -477,6 +482,7 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 ### Progressive Animations
 - **Crisis Cards**: Staggered entrance with scale animations and hover effects
 - **Chat Messages**: Fade-in with typing cursor for streaming text
+
 ![Alt Text](./src/assets/chat.jpeg)
 - **Medical Assessment**: Sequential section reveals (0.3s intervals)
   - Crisis badges → Assessment → Actions → Warnings → Escalation → Reassurance → Resources
@@ -536,11 +542,10 @@ VITE_MEDICAL_API_URL=https://your-backend.onrender.com
 
 ## Useful Links
 
-- **Frontend Repository**: [https://github.com/rupeshv2121/CalmPath_Frontend](https://github.com/rupeshv2121/CalmPath_Frontend)
-- **Backend Repository**: [https://github.com/your-org/CalmPath_Backend](https://github.com/your-org/CalmPath_Backend) *(update link)*
-- **Live Demo**: [https://calm-path-frontend.vercel.app](https://calm-path-frontend.vercel.app) *(if deployed)*
-- **Issues & Bugs**: [Report here](https://github.com/rupeshv2121/CalmPath_Frontend/issues)
-- **Feature Requests**: [Suggest features](https://github.com/rupeshv2121/CalmPath_Frontend/issues/new)
+- **Frontend Repository**: [https://github.com/AustinVarshney/4Unknowns_AMUHACKS5.0](https://github.com/AustinVarshney/4Unknowns_AMUHACKS5.0)
+- **Backend Repository**: [https://github.com/rupeshv2121/4Unknowns_AMUHACKS5.0](https://github.com/rupeshv2121/4Unknowns_AMUHACKS5.0) *(update link)*
+- **Live Demo**: [https://calm-path-frontend.vercel.app/](https://calm-path-frontend.vercel.app/)
+- **Demo Video**: [https://youtu.be/zTNmNLoI55w?si=NgDbHv9-rawPYuqQ](https://youtu.be/zTNmNLoI55w?si=NgDbHv9-rawPYuqQ)
 
 ---
 
