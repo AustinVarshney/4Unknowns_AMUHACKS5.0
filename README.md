@@ -89,9 +89,6 @@ Visit `http://localhost:5173`
   - 4-7-8 Breathing
   - Quick Calm (2-3-4)
 - **Animated Visual Guides**: Breathing circle that scales with inhale/exhale cycles
-- **Emergency Contacts Manager**: Save and manage trusted contacts with persistent storage
-- **Safety Checklist**: Track preparedness across Home Safety, Digital Prep, and Go-Bag items
-- **First Aid Quick Reference**: Accordion-style tips for common emergencies (cuts, burns, choking, CPR, etc.)
 
 ### Medical Assessment Features
 - **Real-time Backend Integration**: FastAPI backend for medical crisis evaluation
