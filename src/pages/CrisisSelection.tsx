@@ -18,7 +18,7 @@ const CrisisSelection = () => {
     <PageWrapper className="flex min-h-screen flex-col px-4 py-6 sm:px-6 sm:py-8 lg:h-screen lg:overflow-hidden lg:px-12 lg:py-8">
       <button
         onClick={() => navigate("/")}
-        className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-all hover:scale-105 hover:text-foreground lg:mb-8"
+        className="mb-6 flex items-center gap-2 text-sm text-muted-foreground transition-all hover:text-foreground lg:mb-8"
       >
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
