@@ -50,6 +50,21 @@ const steps = [
   },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const stagger = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
+    },
+  },
+};
+
 const Index = () => {
   const navigate = useNavigate();
 
@@ -57,19 +72,33 @@ const Index = () => {
     <PageWrapper className="relative flex flex-col overflow-hidden">
       <LiveLocationMap />
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--calm)/0.45),_transparent_70%)] blur-2xl" />
-        <div className="absolute right-0 top-20 h-96 w-96 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.35),_transparent_65%)] blur-3xl" />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 18, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--calm)/0.45),_transparent_70%)] blur-2xl"
+        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, -22, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute right-0 top-20 h-96 w-96 rounded-full bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.35),_transparent_65%)] blur-3xl"
+        />
         <div className="absolute inset-0 hero-grid opacity-70" />
       </div>
 
       {/* Hero */}
       <section className="relative flex min-h-[80vh] w-full items-center px-6 py-20">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-14 lg:flex-row lg:items-start">
-          <div className="flex w-full flex-1 flex-col items-center text-center lg:items-start lg:text-left">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate="visible"
+            className="flex w-full flex-1 flex-col items-center text-center lg:items-start lg:text-left"
+          >
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
+              variants={fadeUp}
+              transition={{ duration: 0.5 }}
               className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm"
             >
               <Sparkles className="h-4 w-4 text-primary" />
@@ -77,9 +106,8 @@ const Index = () => {
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              variants={fadeUp}
+              transition={{ duration: 0.6 }}
               className="mb-5 text-4xl font-semibold tracking-tight text-foreground md:text-5xl lg:text-6xl"
             >
               CalmPath helps you find
@@ -89,9 +117,8 @@ const Index = () => {
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              variants={fadeUp}
+              transition={{ duration: 0.6 }}
               className="mb-8 max-w-xl text-lg text-muted-foreground md:text-xl"
             >
               A personal crisis decision assistant that grounds you, guides you, and connects
@@ -99,9 +126,8 @@ const Index = () => {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              variants={fadeUp}
+              transition={{ duration: 0.6 }}
               className="flex flex-col gap-4 sm:flex-row"
             >
               <button
@@ -120,9 +146,8 @@ const Index = () => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              variants={fadeUp}
+              transition={{ duration: 0.6 }}
               className="mt-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-3"
             >
               {stats.map((stat) => (
@@ -135,12 +160,13 @@ const Index = () => {
                 </div>
               ))}
             </motion.div>
-          </div>
+          </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.6, delay: 0.1 }}
             className="flex w-full max-w-md flex-1 flex-col gap-4"
           >
             <div className="glass-panel rounded-3xl p-6 shadow-xl">
@@ -203,13 +229,18 @@ const Index = () => {
               The calm you can rely on
             </h2>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+          >
             {features.map((f, i) => (
               <motion.div
                 key={f.title}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
+                variants={fadeUp}
+                transition={{ duration: 0.5, delay: 0.05 * i }}
                 className="glass-panel flex h-full flex-col gap-4 rounded-3xl p-6"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
@@ -221,7 +252,7 @@ const Index = () => {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -232,17 +263,28 @@ const Index = () => {
             <h2 className="text-3xl font-semibold text-foreground md:text-4xl">How CalmPath works</h2>
             <p className="mt-3 text-muted-foreground">Three steps to regain a sense of control.</p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid gap-6 md:grid-cols-3"
+          >
             {steps.map((step, index) => (
-              <div key={step.title} className="rounded-3xl border border-border bg-background/70 p-6 shadow-sm">
+              <motion.div
+                key={step.title}
+                variants={fadeUp}
+                transition={{ duration: 0.5, delay: 0.05 * index }}
+                className="rounded-3xl border border-border bg-background/70 p-6 shadow-sm"
+              >
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-sm font-semibold text-primary">
                   0{index + 1}
                 </div>
                 <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{step.desc}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
