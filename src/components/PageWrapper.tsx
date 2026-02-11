@@ -113,6 +113,14 @@ const OFFLINE_QUESTION_SECTIONS = [
   },
 ];
 
+const OFFLINE_GROUNDING_TIPS = [
+  "Inhale 4 seconds, hold 4, exhale 6. Repeat twice.",
+  "Name 3 things you can see, 2 you can touch, 1 you can hear.",
+  "Press feet into the floor for 5 seconds, then relax.",
+  "Sip water slowly. Count 5 sips if you can.",
+  "Soften your shoulders. Unclench your jaw. Breathe once, slowly.",
+];
+
 const PageWrapper = ({ children, className = "" }: PageWrapperProps) => {
   const [isOffline, setIsOffline] = useState(() =>
     typeof navigator === "undefined" ? false : !navigator.onLine
@@ -159,6 +167,11 @@ const PageWrapper = ({ children, className = "" }: PageWrapperProps) => {
     : null;
 
   const selectedAnswer = questionKey ? answers[questionKey] : undefined;
+
+  const groundingTip = useMemo(() => {
+    if (!activeSection) return OFFLINE_GROUNDING_TIPS[0];
+    return OFFLINE_GROUNDING_TIPS[currentQuestionIndex % OFFLINE_GROUNDING_TIPS.length];
+  }, [activeSection, currentQuestionIndex]);
 
   const offlineSummary = useMemo(() => {
     const answeredCount = Object.keys(answers).length;
@@ -345,7 +358,7 @@ const PageWrapper = ({ children, className = "" }: PageWrapperProps) => {
                     Quick grounding
                   </p>
                   <p className="mt-1 text-sm font-medium text-foreground">
-                    Inhale 4 seconds, hold 4, exhale 6. Repeat twice.
+                    {groundingTip}
                   </p>
                 </div>
                 <div className="text-sm font-semibold text-primary">{offlineSummary}</div>
