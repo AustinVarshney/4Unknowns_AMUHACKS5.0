@@ -57,9 +57,6 @@ const ChatBot = () => {
   const [panicLevel, setPanicLevel] = useState<PanicLevel>("stressed");
   const [isListening, setIsListening] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
-  const [isLocating, setIsLocating] = useState(false);
-  const [locationLabel, setLocationLabel] = useState("Location not shared");
-  const [locationError, setLocationError] = useState<string | null>(null);
   const [showAllPresets, setShowAllPresets] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -170,59 +167,6 @@ const ChatBot = () => {
     if (panicLevel === "stressed" && messages.length > 3) setPanicLevel("calm");
   };
 
-  const reverseGeocode = async (latitude: number, longitude: number) => {
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=16&addressdetails=1&accept-language=en`
-      );
-      if (!response.ok) return null;
-      const data = await response.json();
-      const address = data?.address ?? {};
-      const locality =
-        address.neighbourhood ||
-        address.suburb ||
-        address.village ||
-        address.town ||
-        address.city ||
-        address.county ||
-        address.state_district ||
-        address.state;
-      const region = address.state || address.country;
-      if (locality && region && locality !== region) return `${locality}, ${region}`;
-      return locality || region || data?.display_name || null;
-    } catch {
-      return null;
-    }
-  };
-
-  const requestLocation = () => {
-    if (!navigator.geolocation) {
-      setLocationError("Location is not supported in this browser.");
-      setLocationLabel("Location unavailable");
-      return;
-    }
-
-    setIsLocating(true);
-    setLocationError(null);
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const fallbackLabel = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
-        setLocationLabel(fallbackLabel);
-        reverseGeocode(latitude, longitude).then((placeLabel) => {
-          if (placeLabel) setLocationLabel(placeLabel);
-        });
-        setIsLocating(false);
-      },
-      (error) => {
-        setLocationError(error.message || "Unable to retrieve location.");
-        setLocationLabel("Location unavailable");
-        setIsLocating(false);
-      },
-      { enableHighAccuracy: true, timeout: 8000 }
-    );
-  };
 
   const quickPresets = [
     "Someone unconscious",
@@ -275,29 +219,6 @@ const ChatBot = () => {
           {crisisLabels[crisisType] || "Crisis Assistant"}
         </h2>
         <PanicIndicator level={panicLevel} />
-      </div>
-
-      {/* Location awareness (UI-only) */}
-      <div className="flex-shrink-0 border-b border-border/30 bg-card/60 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="mx-auto flex max-w-4xl lg:max-w-5xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-            <span className="inline-flex items-center rounded-full bg-accent/50 px-2.5 py-1 text-foreground">
-              📍 Location
-            </span>
-            <span className="font-medium text-foreground">
-              {isLocating ? "Locating..." : locationLabel}
-            </span>
-            {locationError && (
-              <span className="text-xs text-destructive/80">({locationError})</span>
-            )}
-          </div>
-          <button
-            onClick={requestLocation}
-            className="inline-flex items-center justify-center rounded-lg border border-border/50 bg-background/70 px-3 py-1.5 text-xs sm:text-sm font-medium text-foreground transition-all hover:bg-accent/60"
-          >
-            {isLocating ? "Fetching..." : "Get Location"}
-          </button>
-        </div>
       </div>
 
       {/* Messages - Scrollable only when overflow */}

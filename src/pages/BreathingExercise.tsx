@@ -28,6 +28,7 @@ const BreathingExercise = () => {
   const navigate = useNavigate();
   const [patternIdx, setPatternIdx] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [phase, setPhase] = useState<Phase>("inhale");
   const [countdown, setCountdown] = useState(patterns[0].inhale);
   const [cycles, setCycles] = useState(1);
@@ -62,6 +63,7 @@ const BreathingExercise = () => {
     setCountdown(pattern.inhale);
     setCycles(1);
     setIsRunning(false);
+    setHasStarted(false);
   }, [patternIdx, pattern.inhale]);
 
   useEffect(() => {
@@ -80,6 +82,7 @@ const BreathingExercise = () => {
 
   const reset = () => {
     setIsRunning(false);
+    setHasStarted(false);
     setPhase("inhale");
     setCountdown(pattern.inhale);
     setCycles(1);
@@ -142,7 +145,7 @@ const BreathingExercise = () => {
                 style={{ backgroundColor: phaseColors[phase] }}
               >
                 <span className="text-xl font-bold text-primary-foreground tabular-nums sm:text-2xl lg:text-3xl">
-                  {isRunning ? countdown : "—"}
+                  {hasStarted ? countdown : "—"}
                 </span>
               </motion.div>
             </div>
@@ -161,7 +164,9 @@ const BreathingExercise = () => {
                     {phaseLabels[phase]}
                   </motion.p>
                 ) : (
-                  <p className="text-base font-semibold text-muted-foreground sm:text-lg lg:text-xl">Ready to Begin</p>
+                  <p className="text-base font-semibold text-muted-foreground sm:text-lg lg:text-xl">
+                    {hasStarted ? "Paused" : "Ready to Begin"}
+                  </p>
                 )}
               </AnimatePresence>
 
@@ -179,11 +184,18 @@ const BreathingExercise = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setIsRunning(!isRunning)}
+            onClick={() => {
+              if (!hasStarted) setHasStarted(true);
+              setIsRunning((prev) => !prev);
+            }}
             className="flex items-center gap-2 rounded-2xl bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 sm:px-8 sm:py-3 lg:px-8 lg:py-3 lg:text-base"
           >
-            {isRunning ? <Pause className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5 lg:w-5" /> : <Play className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5 lg:w-5" />}
-            {isRunning ? "Pause" : "Start"}
+            {isRunning ? (
+              <Pause className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5 lg:w-5" />
+            ) : (
+              <Play className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5 lg:w-5" />
+            )}
+            {isRunning ? "Pause" : hasStarted ? "Resume" : "Start"}
           </motion.button>
           {isRunning && (
             <motion.button
