@@ -86,26 +86,26 @@ const BreathingExercise = () => {
   };
 
   return (
-    <PageWrapper className="flex min-h-screen flex-col px-4 py-3 sm:px-6 sm:py-4 lg:h-screen lg:overflow-hidden lg:px-12 lg:py-4">
+    <PageWrapper className="flex min-h-screen flex-col px-4 py-2 sm:px-6 sm:py-3 lg:h-screen lg:overflow-auto lg:px-8 lg:py-3">
       <button
         onClick={() => navigate("/")}
-        className="mb-3 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:mb-4 lg:mb-3"
+        className="mb-2 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:mb-3"
       >
         <ArrowLeft className="h-4 w-4" /> Home
       </button>
 
-      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center lg:gap-1">
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center gap-2 pb-4">
         <div className="w-full text-center">
-          <h1 className="mb-1 text-2xl font-bold text-foreground sm:text-3xl lg:mb-1 lg:text-4xl">Breathing Exercise</h1>
-          <p className="mb-3 text-xs text-muted-foreground sm:mb-4 sm:text-sm lg:mb-3 lg:text-base">Calm your body and mind with guided breathing.</p>
+          <h1 className="mb-1 text-2xl font-bold text-foreground sm:text-3xl lg:text-3xl">Breathing Exercise</h1>
+          <p className="mb-2 text-xs text-muted-foreground sm:mb-3 sm:text-sm lg:text-sm">Calm your body and mind with guided breathing.</p>
 
           {/* Pattern selector */}
-          <div className="mb-3 flex flex-wrap justify-center gap-1.5 sm:mb-4 sm:gap-2 lg:mb-3 lg:gap-3">
+          <div className="mb-2 flex flex-wrap justify-center gap-1.5 sm:mb-3 sm:gap-2 lg:gap-2">
             {patterns.map((p, i) => (
               <button
                 key={p.name}
                 onClick={() => { setPatternIdx(i); reset(); }}
-                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-all hover:scale-105 sm:px-4 sm:py-2 sm:text-sm lg:px-6 lg:py-2.5 lg:text-base ${
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-all hover:scale-105 sm:px-4 sm:py-2 sm:text-sm lg:px-5 lg:py-2 lg:text-sm ${
                   i === patternIdx
                     ? "border-primary bg-primary/10 text-primary shadow-md"
                     : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:shadow-sm"
@@ -116,39 +116,39 @@ const BreathingExercise = () => {
             ))}
           </div>
 
-          <p className="mb-3 text-xs text-muted-foreground sm:mb-4 sm:text-sm lg:mb-3 lg:text-base">{pattern.desc}</p>
+          <p className="mb-2 text-xs text-muted-foreground sm:mb-3 sm:text-sm lg:text-sm">{pattern.desc}</p>
         </div>
 
         {/* Breathing circle - now in a card container */}
-        <div className="relative mb-3 w-full sm:mb-4 lg:mb-3">
-          <div className="mx-auto w-fit rounded-3xl bg-gradient-to-br from-background to-secondary/20 p-4 shadow-lg sm:p-6 lg:p-10">
-            <div className="relative mx-auto flex h-48 w-48 items-center justify-center sm:h-56 sm:w-56 lg:h-80 lg:w-80">
+        <div className="relative mb-2 w-full sm:mb-3 lg:mb-3">
+          <div className="mx-auto w-fit rounded-3xl bg-gradient-to-br from-background to-secondary/20 p-3 shadow-lg sm:p-4 lg:p-6">
+            <div className="relative mx-auto flex h-44 w-44 items-center justify-center sm:h-52 sm:w-52 lg:h-64 lg:w-64">
               <motion.div
                 animate={{ scale: isRunning ? circleScale : 1 }}
                 transition={{ duration: phaseDuration(phase), ease: "easeInOut" }}
-                className="absolute h-36 w-36 rounded-full opacity-20 sm:h-44 sm:w-44 lg:h-60 lg:w-60"
+                className="absolute h-32 w-32 rounded-full opacity-20 sm:h-40 sm:w-40 lg:h-48 lg:w-48"
                 style={{ backgroundColor: phaseColors[phase] }}
               />
               <motion.div
                 animate={{ scale: isRunning ? circleScale : 1 }}
                 transition={{ duration: phaseDuration(phase), ease: "easeInOut" }}
-                className="absolute h-24 w-24 rounded-full opacity-40 sm:h-28 sm:w-28 lg:h-44 lg:w-44"
+                className="absolute h-22 w-22 rounded-full opacity-40 sm:h-26 sm:w-26 lg:h-36 lg:w-36"
                 style={{ backgroundColor: phaseColors[phase] }}
               />
               <motion.div
                 animate={{ scale: isRunning ? circleScale : 1 }}
                 transition={{ duration: phaseDuration(phase), ease: "easeInOut" }}
-                className="flex h-16 w-16 items-center justify-center rounded-full shadow-xl sm:h-20 sm:w-20 lg:h-32 lg:w-32"
+                className="flex h-16 w-16 items-center justify-center rounded-full shadow-xl sm:h-18 sm:w-18 lg:h-28 lg:w-28"
                 style={{ backgroundColor: phaseColors[phase] }}
               >
-                <span className="text-xl font-bold text-primary-foreground tabular-nums sm:text-2xl lg:text-4xl">
+                <span className="text-xl font-bold text-primary-foreground tabular-nums sm:text-2xl lg:text-3xl">
                   {isRunning ? countdown : "—"}
                 </span>
               </motion.div>
             </div>
 
             {/* Phase label and cycles inside the card */}
-            <div className="mt-3 sm:mt-4 lg:mt-5">
+            <div className="mt-2 sm:mt-3 lg:mt-3">
               <AnimatePresence mode="wait">
                 {isRunning ? (
                   <motion.p
@@ -156,17 +156,17 @@ const BreathingExercise = () => {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    className="text-base font-semibold text-foreground sm:text-lg lg:text-2xl"
+                    className="text-base font-semibold text-foreground sm:text-lg lg:text-xl"
                   >
                     {phaseLabels[phase]}
                   </motion.p>
                 ) : (
-                  <p className="text-base font-semibold text-muted-foreground sm:text-lg lg:text-2xl">Ready to Begin</p>
+                  <p className="text-base font-semibold text-muted-foreground sm:text-lg lg:text-xl">Ready to Begin</p>
                 )}
               </AnimatePresence>
 
               {isRunning && (
-                <p className="mt-1 text-xs text-muted-foreground sm:text-sm lg:text-base">
+                <p className="mt-1 text-xs text-muted-foreground sm:text-sm lg:text-sm">
                   Cycle {cycles}
                 </p>
               )}
@@ -175,12 +175,12 @@ const BreathingExercise = () => {
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-3 sm:gap-4 lg:gap-4">
+        <div className="flex items-center justify-center gap-3 sm:gap-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsRunning(!isRunning)}
-            className="flex items-center gap-2 rounded-2xl bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 sm:px-8 sm:py-3.5 lg:px-10 lg:py-4 lg:text-lg"
+            className="flex items-center gap-2 rounded-2xl bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 sm:px-8 sm:py-3 lg:px-8 lg:py-3 lg:text-base"
           >
             {isRunning ? <Pause className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5 lg:w-5" /> : <Play className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5 lg:w-5" />}
             {isRunning ? "Pause" : "Start"}
@@ -192,7 +192,7 @@ const BreathingExercise = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={reset}
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground shadow-md transition-colors hover:bg-secondary/80 sm:h-14 sm:w-14 lg:h-16 lg:w-16"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground shadow-md transition-colors hover:bg-secondary/80 sm:h-12 sm:w-12 lg:h-12 lg:w-12"
             >
               <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5 lg:w-5" />
             </motion.button>

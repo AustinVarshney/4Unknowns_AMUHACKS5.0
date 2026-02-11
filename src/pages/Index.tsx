@@ -154,7 +154,7 @@ const Index = () => {
                     <p className="text-lg font-semibold text-foreground">Stay grounded</p>
                   </div>
                 </div>
-                <span className="rounded-full bg-calm/20 px-3 py-1 text-xs font-semibold text-calm">
+                <span className="rounded-full bg-calm/20 px-3 py-1 text-xs font-semibold text-calm text-center">
                   Safe pace
                 </span>
               </div>
